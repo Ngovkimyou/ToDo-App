@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
-    <nav>
+    <nav style={{ display: "flex", gap: "1rem", justifyContent: "center"}}>
       <Link to="/">Home</Link>
       <Link to="/calendar">Calendar</Link>
       <Link to="/create">Create Task</Link>
