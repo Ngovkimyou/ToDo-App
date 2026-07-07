@@ -9,17 +9,19 @@ import About from "./pages/About";
 
 function App() {
   return (
-    <>
+    <div className="app-shell">
       <Navbar />
-      
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/calendar" element={<Calendar />} />
-        <Route path="/create" element={<CreateTask />} />
-        <Route path="/recycling-bin" element={<RecyclingBin />} />
-        <Route path="/about" element={<About />} />
-      </Routes>
-    </>
+
+      <main className="app-panel">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/calendar" element={<Calendar />} />
+          <Route path="/create" element={<CreateTask />} />
+          <Route path="/recycling-bin" element={<RecyclingBin />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
+      </main>
+    </div>
   );
 }
 
