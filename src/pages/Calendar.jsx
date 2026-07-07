@@ -1,5 +1,12 @@
-function Calendar() {
-  return <h1>Calendar</h1>;
+import Calendar from "../components/Calendar";
+
+function CalendarPage() {
+  return (
+    <>
+      <h1>Calendar</h1>
+      <Calendar />
+    </>
+  );
 }
 
-export default Calendar;
+export default CalendarPage;
