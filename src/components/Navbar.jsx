@@ -5,13 +5,23 @@ import calendarIcon from "../assets/Calendar-icon.avif";
 import checklistIcon from "../assets/CheckList-icon.avif";
 import createTaskIcon from "../assets/CreateTask-icon.avif";
 import recyclingBinIcon from "../assets/RecyclingBin-icon.avif";
+import blackAboutIcon from "../assets/black-About-icon.avif";
+import blackCalendarIcon from "../assets/black-Calendar-icon.avif";
+import blackChecklistIcon from "../assets/black-CheckList-icon.avif";
+import blackCreateTaskIcon from "../assets/black-CreateTask-icon.avif";
+import blackRecyclingBinIcon from "../assets/black-RecyclingBin-icon.avif";
 
 const navItems = [
-  { to: "/", label: "Checklist", icon: checklistIcon },
-  { to: "/calendar", label: "Calendar", icon: calendarIcon },
-  { to: "/create", label: "Create Task", icon: createTaskIcon },
-  { to: "/recycling-bin", label: "Recycling Bin", icon: recyclingBinIcon },
-  { to: "/about", label: "About", icon: aboutIcon },
+  { to: "/", label: "Checklist", icon: checklistIcon, hoverIcon: blackChecklistIcon },
+  { to: "/calendar", label: "Calendar", icon: calendarIcon, hoverIcon: blackCalendarIcon },
+  { to: "/create", label: "Create Task", icon: createTaskIcon, hoverIcon: blackCreateTaskIcon },
+  {
+    to: "/recycling-bin",
+    label: "Recycling Bin",
+    icon: recyclingBinIcon,
+    hoverIcon: blackRecyclingBinIcon,
+  },
+  { to: "/about", label: "About", icon: aboutIcon, hoverIcon: blackAboutIcon },
 ];
 
 function Navbar() {
@@ -75,7 +85,10 @@ function Navbar() {
           }
         >
           <span className="nav-pill-inner">
-            <img className="nav-icon" src={item.icon} alt="" aria-hidden="true" />
+            <span className="nav-icon-wrap" aria-hidden="true">
+              <img className="nav-icon nav-icon-default" src={item.icon} alt="" />
+              <img className="nav-icon nav-icon-hover" src={item.hoverIcon} alt="" />
+            </span>
             <span>{item.label}</span>
           </span>
         </NavLink>

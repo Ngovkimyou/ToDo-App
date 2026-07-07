@@ -125,13 +125,23 @@ body {
   border-radius: 999px;
   box-sizing: border-box;
   background: #000;
+  color: #fff;
   transform: translateX(0) scale(1);
   transform-origin: center;
   transition:
+    background 220ms ease,
+    color 220ms ease,
     border-color 220ms ease,
     border-width 220ms ease,
     padding 320ms cubic-bezier(0.22, 1, 0.36, 1),
     transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-pill:not(.nav-pill-active):hover .nav-pill-inner {
+  border-color: #000;
+  background: #fff;
+  color: #000;
+  transform: translateY(-2px);
 }
 
 .nav-pill-active .nav-pill-inner {
@@ -141,6 +151,7 @@ body {
 }
 
 .nav-pill-inner > span,
+.nav-icon-wrap,
 .nav-icon {
   transition:
     transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -148,16 +159,37 @@ body {
 }
 
 .nav-pill-active .nav-pill-inner > span,
-.nav-pill-active .nav-icon {
+.nav-pill-active .nav-icon-wrap {
   transform: translateX(3px);
+}
+
+.nav-icon-wrap {
+  width: 24px;
+  height: 24px;
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
 }
 
 .nav-icon {
   width: 24px;
   height: 24px;
+  position: absolute;
+  inset: 0;
   display: block;
-  flex: 0 0 auto;
   object-fit: contain;
+}
+
+.nav-icon-hover {
+  opacity: 0;
+}
+
+.nav-pill:not(.nav-pill-active):hover .nav-icon-default {
+  opacity: 0;
+}
+
+.nav-pill:not(.nav-pill-active):hover .nav-icon-hover {
+  opacity: 1;
 }
 
 .app-panel {
@@ -174,20 +206,6 @@ body {
   scrollbar-color: #000 transparent;
   scrollbar-gutter: stable;
   scrollbar-width: thin;
-}
-
-.app-panel::-webkit-scrollbar {
-  width: 12px;
-}
-
-.app-panel::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.app-panel::-webkit-scrollbar-thumb {
-  background: #000;
-  border: 2px solid #fff;
-  border-radius: 999px;
 }
 
 @media (max-width: 760px) {
@@ -285,108 +303,4 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
-}
-
-.create-task-page {
-  max-width: 720px;
-  margin: 0 auto;
-}
-
-.task-form {
-  display: grid;
-  gap: 18px;
-}
-
-.form-field,
-.date-time-picker label {
-  display: grid;
-  gap: 8px;
-  color: #000;
-  font-weight: 700;
-}
-
-.form-field input,
-.form-field textarea,
-.form-field select,
-.date-time-picker select {
-  width: 100%;
-  border: 2px solid #000;
-  border-radius: 18px;
-  box-sizing: border-box;
-  background: #fff;
-  color: #000;
-  font: inherit;
-  font-weight: 700;
-}
-
-.form-field input,
-.form-field select {
-  min-height: 54px;
-  padding: 0 18px;
-}
-
-.form-field textarea {
-  min-height: 116px;
-  padding: 16px 18px;
-  resize: vertical;
-}
-
-.date-time-picker {
-  margin: 0;
-  padding: 18px;
-  border: 2px solid #000;
-  border-radius: 22px;
-}
-
-.date-time-picker legend {
-  padding: 0 10px;
-  color: #000;
-  font-size: 22px;
-  font-weight: 700;
-}
-
-.date-time-grid {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(80px, 1fr));
-  gap: 12px;
-}
-
-.date-time-picker label {
-  text-align: center;
-}
-
-.date-time-picker select {
-  min-height: 52px;
-  padding: 0 10px;
-  text-align: center;
-}
-
-.create-task-button {
-  min-height: 58px;
-  border: 0;
-  border-radius: 999px;
-  background: #000;
-  color: #fff;
-  cursor: pointer;
-  font: inherit;
-  font-size: 18px;
-  font-weight: 700;
-  transition:
-    opacity 180ms ease,
-    transform 180ms ease;
-}
-
-.create-task-button:not(:disabled):hover {
-  transform: translateY(-2px);
-}
-
-.create-task-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.35;
-}
-
-@media (max-width: 900px) {
-  .date-time-grid {
-    grid-template-columns: repeat(2, minmax(120px, 1fr));
-  }
 }
