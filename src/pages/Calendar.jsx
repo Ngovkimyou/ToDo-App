@@ -3,7 +3,7 @@ import Calendar from "../components/Calendar";
 function CalendarPage() {
   return (
     <>
-      <h1>Calendar</h1>
+      <h1 className="page-title">Calendar</h1>
       <Calendar />
     </>
   );
