@@ -1,0 +1,74 @@
+.bin-page {
+  width: 100%;
+}
+
+.bin-task-list {
+  width: min(100%, 720px);
+  display: grid;
+  gap: 28px;
+  margin: 0 auto 32px;
+}
+
+.bin-empty {
+  margin: 40px auto;
+  color: #000;
+  font-weight: 700;
+  text-align: center;
+}
+
+.bin-page .task-folder-item,
+.bin-page .task-folder-icon {
+  cursor: default;
+}
+
+.bin-page .task-folder-item:hover {
+  background: transparent;
+}
+
+.bin-page .task-folder-item:active {
+  transform: none;
+}
+
+.bin-page .task-folder-item:hover .task-folder-main {
+  transform: none;
+}
+
+.bin-page .task-folder-icon:hover {
+  box-shadow: none;
+  transform: rotate(-12deg);
+}
+
+.bin-page .task-folder-icon:hover img {
+  transform: rotate(12deg);
+}
+
+.bin-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bin-item-actions .task-menu-action {
+  opacity: 1;
+  transform: none;
+  transition:
+    transform 180ms ease,
+    background 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.bin-item-actions .task-menu-action:hover {
+  transform: translateY(-2px) scale(1.06);
+}
+
+.task-menu-action.is-restore {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.task-menu-action.is-restore:hover {
+  color: #000;
+}

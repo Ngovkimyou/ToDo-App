@@ -1,6 +1,6 @@
 import { createPortal } from "react-dom";
 
-function HomeDeleteConfirm({ task, onCancel, onConfirm }) {
+function HomeDeleteConfirm({ task, heading, onCancel, onConfirm }) {
   if (!task) {
     return null;
   }
@@ -14,11 +14,15 @@ function HomeDeleteConfirm({ task, onCancel, onConfirm }) {
         aria-labelledby="delete-confirm-title"
         onClick={(event) => event.stopPropagation()}
       >
-        <h2 id="delete-confirm-title">Delete Task?</h2>
-        <p>
-          This will permanently delete <strong>{task.title}</strong> and its
-          related content.
-        </p>
+        <h2 id="delete-confirm-title">{heading || "Delete Task?"}</h2>
+        {/* <p>
+          {message || (
+            <>
+              This will move <strong>{task.title}</strong> to the Recycling
+              Bin.
+            </>
+          )}
+        </p> */}
 
         <div className="task-modal-actions">
           <button

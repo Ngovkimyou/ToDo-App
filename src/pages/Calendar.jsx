@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Calendar from "../components/Calendar";
-import HomeDeleteConfirm from "../components/HomeDeleteConfirm";
 import HomeTaskCard from "../components/HomeTaskCard";
 import HomeTaskModal from "../components/HomeTaskModal";
 import { useTasks } from "../context/TaskContext";
@@ -15,7 +14,6 @@ function CalendarPage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTask, setSelectedTask] = useState(null);
   const [selectedTaskMode, setSelectedTaskMode] = useState("view");
-  const [taskToDelete, setTaskToDelete] = useState(null);
 
   const selectedDateKey = getLocalDateKey(selectedDate);
   const markedDates = tasks.map(getTaskDayKey);
@@ -34,7 +32,7 @@ function CalendarPage() {
   useEffect(() => {
     const panel = document.querySelector(".app-panel");
 
-    if (!panel || (!selectedTask && !taskToDelete)) {
+    if (!panel || !selectedTask) {
       return undefined;
     }
 
@@ -44,7 +42,7 @@ function CalendarPage() {
     return () => {
       panel.style.overflowY = previousOverflowY;
     };
-  }, [selectedTask, taskToDelete]);
+  }, [selectedTask]);
 
   return (
     <div className="calendar-page">
@@ -77,7 +75,12 @@ function CalendarPage() {
                 setSelectedTaskMode("edit");
                 setSelectedTask(task);
               }}
-              onTaskDelete={setTaskToDelete}
+              onTaskDelete={(task) => {
+                deleteTask(task.id);
+                setSelectedTask((currentTask) =>
+                  currentTask?.id === task.id ? null : currentTask
+                );
+              }}
               onTaskToggleComplete={toggleComplete}
             />
           ))}
@@ -95,18 +98,6 @@ function CalendarPage() {
           }));
         }}
         onClose={() => setSelectedTask(null)}
-      />
-
-      <HomeDeleteConfirm
-        task={taskToDelete}
-        onCancel={() => setTaskToDelete(null)}
-        onConfirm={() => {
-          deleteTask(taskToDelete.id);
-          setTaskToDelete(null);
-          setSelectedTask((currentTask) =>
-            currentTask?.id === taskToDelete.id ? null : currentTask
-          );
-        }}
       />
     </div>
   );
