@@ -4,6 +4,7 @@ import CategorySelect from "../components/CategorySelect";
 import CharacterLimitedField from "../components/CharacterLimitedField";
 import DateTimePicker from "../components/DateTimePicker";
 import { useTasks } from "../context/TaskContext";
+import { getLocalDateKey } from "../utils/date";
 import {
   DEFAULT_DATE_TIME,
   DESCRIPTION_LIMIT,
@@ -48,6 +49,8 @@ function CreateTask() {
       title: title.trim(),
       description,
       dueDate: formatDueDate(dateTime),
+      createdAt: new Date().toISOString(),
+      createdDate: getLocalDateKey(new Date()),
       category,
       completed: false,
     });

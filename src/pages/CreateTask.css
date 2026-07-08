@@ -252,6 +252,7 @@
 .smart-select-input {
   padding: 0 10px;
   text-align: center;
+  box-shadow: none !important;
 }
 
 .smart-select-input:focus {
@@ -360,8 +361,15 @@
 }
 
 .create-task-button:disabled {
-  cursor: not-allowed;
+  cursor: not-allowed !important;
   opacity: 0.35;
+}
+
+.create-task-button:disabled:hover {
+  background: #000;
+  color: #fff;
+  box-shadow: none;
+  transform: none;
 }
 
 @media (max-width: 900px) {
