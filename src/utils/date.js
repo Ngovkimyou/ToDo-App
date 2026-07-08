@@ -6,6 +6,18 @@ export function getLocalDateKey(date) {
   return `${year}-${month}-${day}`;
 }
 
+// Turns a task's due date ("DD/MM/YYYY HH:MM AM") into a "YYYY-MM-DD" key.
+// Returns null when the task has no readable due date.
+export function getTaskDueDateKey(task) {
+  const match = /^(\d{2})\/(\d{2})\/(\d{4})/.exec(task.dueDate || "");
+
+  if (!match) {
+    return null;
+  }
+
+  return `${match[3]}-${match[2]}-${match[1]}`;
+}
+
 export function getTaskCreatedDateKey(task) {
   if (task.createdDate) {
     return task.createdDate;

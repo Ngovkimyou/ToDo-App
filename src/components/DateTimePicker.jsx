@@ -7,9 +7,16 @@ const monthOptions = createNumberOptions(12, 1);
 const hourOptions = createNumberOptions(12, 1);
 const minuteOptions = createNumberOptions(60);
 
+const currentYear = new Date().getFullYear();
+const yearOptions = [];
+for (let year = currentYear; year <= currentYear + 4; year++) {
+  yearOptions.push(String(year));
+}
+
 const dateTimeFields = [
   { key: "day", label: "Day", options: dayOptions },
   { key: "month", label: "Month", options: monthOptions },
+  { key: "year", label: "Year", options: yearOptions },
   { key: "hour", label: "Hour", options: hourOptions },
   { key: "minute", label: "Minute", options: minuteOptions },
   { key: "period", label: "AM/PM", options: ["AM", "PM"] },

@@ -12,6 +12,7 @@ export const CATEGORY_OPTIONS = [
 export const DEFAULT_DATE_TIME = {
   day: "01",
   month: "01",
+  year: String(new Date().getFullYear()),
   hour: "12",
   minute: "00",
   period: "AM",
@@ -35,6 +36,6 @@ export function getCharacterStatus(length, limit) {
   return "";
 }
 
-export function formatDueDate({ day, month, hour, minute, period }) {
-  return `${day}/${month} ${hour}:${minute} ${period}`;
+export function formatDueDate({ day, month, year, hour, minute, period }) {
+  return `${day}/${month}/${year} ${hour}:${minute} ${period}`;
 }

@@ -1,0 +1,22 @@
+.calendar-page {
+  width: 100%;
+}
+
+.calendar-day-tasks {
+  width: min(100%, 720px);
+  margin: 0 auto;
+  padding-bottom: 40px;
+}
+
+.calendar-day-tasks-title {
+  text-align: center;
+  font-size: 22px;
+  color: #08060d;
+  margin: 0 0 20px;
+}
+
+.calendar-no-tasks {
+  text-align: center;
+  color: #6b6375;
+  margin: 0;
+}

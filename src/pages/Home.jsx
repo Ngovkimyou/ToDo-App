@@ -6,21 +6,9 @@ import HomeFilterSelect from "../components/HomeFilterSelect";
 import HomeTaskCard from "../components/HomeTaskCard";
 import HomeTaskModal from "../components/HomeTaskModal";
 import { getLocalDateKey, getTaskCreatedDateKey } from "../utils/date";
+import { groupTasksByCategory } from "../utils/tasks";
 
 import "./Home.css";
-
-function groupTasksByCategory(tasks) {
-  return tasks.reduce((groups, task) => {
-    const category = task.category || "No category";
-
-    if (!groups[category]) {
-      groups[category] = [];
-    }
-
-    groups[category].push(task);
-    return groups;
-  }, {});
-}
 
 function Home() {
   const { tasks, editTask, deleteTask, toggleComplete } = useTasks();

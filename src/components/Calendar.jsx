@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getLocalDateKey } from "../utils/date";
 import "./Calendar.css";
 
 const DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -48,11 +49,10 @@ function isSameDay(a, b) {
   );
 }
 
-function Calendar() {
+function Calendar({ selectedDate, onDaySelect, markedDates = [] }) {
   const today = new Date();
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth());
-  const [selectedDate, setSelectedDate] = useState(null);
   const [view, setView] = useState("days"); // "days" | "months" | "years"
   // Animation class for the body: "slide-left", "slide-right",
   // "zoom-in" (drill down) or "zoom-out" (drill up).
@@ -123,11 +123,16 @@ function Calendar() {
     setMonth(today.getMonth());
     setView("days");
     setAnimation("zoom-in");
+    if (onDaySelect) {
+      onDaySelect(today);
+    }
   }
 
   function handleDayClick(cell) {
     const date = new Date(year, month + cell.offset, cell.day);
-    setSelectedDate(date);
+    if (onDaySelect) {
+      onDaySelect(date);
+    }
     setYear(date.getFullYear());
     setMonth(date.getMonth());
     if (cell.offset === -1) {
@@ -182,6 +187,7 @@ function Calendar() {
             ))}
             {getCalendarCells(year, month).map((cell, index) => {
               const cellDate = new Date(year, month + cell.offset, cell.day);
+              const hasTasks = markedDates.includes(getLocalDateKey(cellDate));
               let className = "calendar-day";
               if (cell.offset !== 0) className += " outside";
               if (isSameDay(cellDate, today)) className += " today";
@@ -195,6 +201,7 @@ function Calendar() {
                   onClick={() => handleDayClick(cell)}
                 >
                   {cell.day}
+                  {hasTasks && <span className="calendar-day-dot" />}
                 </button>
               );
             })}
