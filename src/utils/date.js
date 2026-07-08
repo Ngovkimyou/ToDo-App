@@ -18,6 +18,12 @@ export function getTaskDueDateKey(task) {
   return `${match[3]}-${match[2]}-${match[1]}`;
 }
 
+// Day a task shows up on in the calendar: its due date, or the day it
+// was created when it has no readable due date.
+export function getTaskDayKey(task) {
+  return getTaskDueDateKey(task) || getTaskCreatedDateKey(task);
+}
+
 export function getTaskCreatedDateKey(task) {
   if (task.createdDate) {
     return task.createdDate;

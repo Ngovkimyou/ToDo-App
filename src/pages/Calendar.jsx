@@ -4,7 +4,7 @@ import HomeDeleteConfirm from "../components/HomeDeleteConfirm";
 import HomeTaskCard from "../components/HomeTaskCard";
 import HomeTaskModal from "../components/HomeTaskModal";
 import { useTasks } from "../context/TaskContext";
-import { getLocalDateKey, getTaskDueDateKey } from "../utils/date";
+import { getLocalDateKey, getTaskDayKey } from "../utils/date";
 import { groupTasksByCategory } from "../utils/tasks";
 
 import "./Home.css";
@@ -18,9 +18,9 @@ function CalendarPage() {
   const [taskToDelete, setTaskToDelete] = useState(null);
 
   const selectedDateKey = getLocalDateKey(selectedDate);
-  const markedDates = tasks.map(getTaskDueDateKey);
+  const markedDates = tasks.map(getTaskDayKey);
   const dayTasks = tasks.filter(
-    (task) => getTaskDueDateKey(task) === selectedDateKey
+    (task) => getTaskDayKey(task) === selectedDateKey
   );
   const taskGroups = Object.entries(groupTasksByCategory(dayTasks));
 

@@ -9,10 +9,14 @@ export const CATEGORY_OPTIONS = [
   { value: "Other", label: "❓ Other" },
 ];
 
+// Defaults to today, so a task created without touching the date
+// picker automatically becomes today's task.
+const now = new Date();
+
 export const DEFAULT_DATE_TIME = {
-  day: "01",
-  month: "01",
-  year: String(new Date().getFullYear()),
+  day: String(now.getDate()).padStart(2, "0"),
+  month: String(now.getMonth() + 1).padStart(2, "0"),
+  year: String(now.getFullYear()),
   hour: "12",
   minute: "00",
   period: "AM",
