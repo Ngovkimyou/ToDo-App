@@ -36,6 +36,19 @@ export function TaskProvider({ children }) {
     setDeletedTasks(deletedTasks.filter((task) => task.id !== id));
   }
 
+  function restoreTasks(ids) {
+    const idSet = new Set(ids);
+    const tasksToRestore = deletedTasks.filter((task) => idSet.has(task.id));
+
+    setDeletedTasks(deletedTasks.filter((task) => !idSet.has(task.id)));
+    setTasks([...tasks, ...tasksToRestore]);
+  }
+
+  function deleteTasksForever(ids) {
+    const idSet = new Set(ids);
+    setDeletedTasks(deletedTasks.filter((task) => !idSet.has(task.id)));
+  }
+
   function toggleComplete(id) {
     setTasks(
       tasks.map((task) =>
@@ -65,6 +78,8 @@ export function TaskProvider({ children }) {
         deleteTask,
         restoreTask,
         deleteTaskForever,
+        restoreTasks,
+        deleteTasksForever,
         toggleComplete,
         editTask,
       }}

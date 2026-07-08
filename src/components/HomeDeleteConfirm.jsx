@@ -1,7 +1,16 @@
 import { createPortal } from "react-dom";
 
-function HomeDeleteConfirm({ task, heading, onCancel, onConfirm }) {
-  if (!task) {
+function HomeDeleteConfirm({
+  task,
+  open,
+  heading,
+  confirmVariant,
+  onCancel,
+  onConfirm,
+}) {
+  const isOpen = open !== undefined ? open : Boolean(task);
+
+  if (!isOpen) {
     return null;
   }
 
@@ -33,7 +42,9 @@ function HomeDeleteConfirm({ task, heading, onCancel, onConfirm }) {
             Cancel
           </button>
           <button
-            className="task-modal-close is-danger"
+            className={`task-modal-close ${
+              confirmVariant === "neutral" ? "" : "is-danger"
+            }`}
             type="button"
             onClick={onConfirm}
           >
