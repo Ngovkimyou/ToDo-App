@@ -44,7 +44,7 @@ function Navbar() {
     setIndicator({
       x: linkRect.left - navRect.left - 5,
       y: linkRect.top - navRect.top - 8,
-      width: linkRect.width + 39,
+      width: linkRect.width + 16.5,
       height: linkRect.height + 16,
     });
   }, [location.pathname]);

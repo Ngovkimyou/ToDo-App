@@ -24,12 +24,16 @@ function SmartSelect({
     setDraftValue(selectedOption?.label || value || placeholder);
   }, [placeholder, selectedOption?.label, value]);
 
-  function handleOpen() {
+  function handleOpen(event) {
     const rect = selectRef.current?.getBoundingClientRect();
     const nextDirection =
       rect && rect.top < window.innerHeight / 2 ? "down" : "up";
 
     onOpen(nextDirection);
+
+    if (isOpen) {
+      event.currentTarget.blur();
+    }
   }
 
   function handleInputChange(event) {
@@ -76,6 +80,17 @@ function SmartSelect({
     }
   }
 
+  function renderOptionContent(option) {
+    return (
+      <span className="smart-select-value">
+        {option.icon && (
+          <img className="smart-select-icon" src={option.icon} alt="" />
+        )}
+        <span>{option.label}</span>
+      </span>
+    );
+  }
+
   return (
     <div ref={selectRef} className={`smart-select smart-select-${direction}`}>
       {editable ? (
@@ -106,7 +121,11 @@ function SmartSelect({
           aria-expanded={isOpen}
           onClick={handleOpen}
         >
-          <span>{value || placeholder}</span>
+          {selectedOption ? (
+            renderOptionContent(selectedOption)
+          ) : (
+            <span>{value || placeholder}</span>
+          )}
           <span className="smart-select-arrow" aria-hidden="true" />
         </button>
       )}
@@ -122,7 +141,7 @@ function SmartSelect({
               type="button"
               onClick={() => onChange(option.value)}
             >
-              {option.label}
+              {renderOptionContent(option)}
             </button>
           ))}
         </div>

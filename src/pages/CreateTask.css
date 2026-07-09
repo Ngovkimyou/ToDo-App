@@ -175,6 +175,9 @@
 .smart-select-option {
   width: 100%;
   min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: 2px solid #000;
   border-radius: 18px;
   box-sizing: border-box;
@@ -189,6 +192,28 @@
     color 180ms ease,
     box-shadow 180ms ease,
     transform 180ms ease;
+}
+
+.smart-select-value {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.smart-select-value span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.smart-select-icon {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  object-fit: contain;
 }
 
 .smart-select-control {

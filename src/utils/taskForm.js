@@ -1,12 +1,18 @@
+import eventIcon from "../assets/event-icon.avif";
+import otherIcon from "../assets/other-icon.avif";
+import personalIcon from "../assets/personal-icon.avif";
+import schoolIcon from "../assets/school-icon.avif";
+import workIcon from "../assets/work-icon.avif";
+
 export const TITLE_LIMIT = 50;
 export const DESCRIPTION_LIMIT = 200;
 
 export const CATEGORY_OPTIONS = [
-  { value: "School", label: "🏫 School" },
-  { value: "Work", label: "🏢 Work" },
-  { value: "Personal", label: "👤 Personal" },
-  { value: "Event", label: "📅 Event" },
-  { value: "Other", label: "❓ Other" },
+  { value: "School", label: "School", icon: schoolIcon },
+  { value: "Work", label: "Work", icon: workIcon },
+  { value: "Personal", label: "Personal", icon: personalIcon },
+  { value: "Event", label: "Event", icon: eventIcon },
+  { value: "Other", label: "Other", icon: otherIcon },
 ];
 
 export const DEFAULT_DATE_TIME = {

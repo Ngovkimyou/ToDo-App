@@ -6,16 +6,16 @@ export function TaskProvider({ children }) {
   const [tasks, setTasks] = useState([]);
 
   function addTask(task) {
-    setTasks([...tasks, task]);
+    setTasks((currentTasks) => [...currentTasks, task]);
   }
 
   function deleteTask(id) {
-    setTasks(tasks.filter((task) => task.id !== id));
+    setTasks((currentTasks) => currentTasks.filter((task) => task.id !== id));
   }
 
   function toggleComplete(id) {
-    setTasks(
-      tasks.map((task) =>
+    setTasks((currentTasks) =>
+      currentTasks.map((task) =>
         task.id === id
           ? { ...task, completed: !task.completed }
           : task
@@ -24,8 +24,8 @@ export function TaskProvider({ children }) {
   }
 
   function editTask(id, updatedTask) {
-    setTasks(
-      tasks.map((task) =>
+    setTasks((currentTasks) =>
+      currentTasks.map((task) =>
         task.id === id
           ? { ...task, ...updatedTask }
           : task

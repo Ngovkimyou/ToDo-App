@@ -65,12 +65,24 @@ function HomeDateStrip({ onDateChange }) {
     onDateChange?.(getLocalDateKey(dates[dateIndex]));
   }
 
+  function resetToToday() {
+    selectDate(TODAY_INDEX);
+  }
+
   return (
     <section className="home-date-strip" aria-label="Choose task date">
-      <h2 className="date-strip-title">
+      <button
+        className="date-strip-title"
+        type="button"
+        onClick={resetToToday}
+        aria-label="Return to today"
+        disabled={selectedIndex === TODAY_INDEX}
+      >
         {monthTitle}
-        <span className="date-title-arrow" aria-hidden="true" />
-      </h2>
+        <span className="date-title-reset" aria-hidden="true">
+          ↺
+        </span>
+      </button>
 
       <button
         className="date-nav-button date-nav-left"
