@@ -39,12 +39,20 @@ function Navbar() {
     }
 
     const navRect = nav.getBoundingClientRect();
+    const activePill = activeLink.querySelector(".nav-pill-inner");
     const linkRect = activeLink.getBoundingClientRect();
+    const pillRect = activePill?.getBoundingClientRect() ?? linkRect;
+    const isMobile = window.innerWidth <= 760;
+    const indicatorWidth = isMobile ? linkRect.width + 16.5 : 232;
 
     setIndicator({
-      x: linkRect.left - navRect.left - 5,
+      x:
+        pillRect.left -
+        navRect.left +
+        pillRect.width / 2 -
+        indicatorWidth / 2,
       y: linkRect.top - navRect.top - 8,
-      width: linkRect.width + 16.5,
+      width: indicatorWidth,
       height: linkRect.height + 16,
     });
   }, [location.pathname]);
