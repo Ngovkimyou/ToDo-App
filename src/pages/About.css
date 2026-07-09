@@ -1,0 +1,227 @@
+.about-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 0 40px;
+}
+
+.about-content {
+  display: grid;
+  gap: 32px;
+}
+
+.about-section {
+  display: grid;
+  gap: 16px;
+}
+
+.page-title {
+  margin-bottom: 8px;
+  color: #000;
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.section-title {
+  margin: 0;
+  color: #000;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.subsection-title {
+  margin: 0;
+  color: #000;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.section-description {
+  margin: 0;
+  padding: 20px 24px;
+  border: 2px solid #000;
+  border-radius: 22px;
+  background: #fff;
+  color: #000;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.7;
+}
+
+/* Instructor */
+.instructor-card {
+  padding: 16px 24px;
+  border: 2px solid #000;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 4px 4px 0 #000;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.instructor-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 0 #000;
+}
+
+.instructor-name {
+  color: #000;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* Team Grid */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.team-card {
+  display: grid;
+  gap: 10px;
+  padding: 20px;
+  border: 2px solid #000;
+  border-radius: 18px;
+  background: #fff;
+  text-align: center; /* Center all content in team cards */
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.team-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 4px 4px 0 #000;
+}
+
+/* Removed the special styling for team leader - now same as others */
+.team-role {
+  color: #666;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.team-name {
+  color: #000;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.team-tasks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center; /* Center the task tags */
+  margin-top: 4px;
+}
+
+.task-tag {
+  padding: 4px 14px;
+  border: 2px solid #000;
+  border-radius: 999px;
+  background: #fff;
+  color: #000;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 180ms ease, color 180ms ease;
+}
+
+.task-tag:hover {
+  background: #000;
+  color: #fff;
+}
+
+/* Technology Grid */
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.tech-card {
+  display: grid;
+  gap: 6px;
+  padding: 18px 20px;
+  border: 2px solid #000;
+  border-radius: 18px;
+  background: #fff;
+  text-align: center;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.tech-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 4px 4px 0 #000;
+}
+
+.tech-category {
+  color: #666;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tech-item {
+  color: #000;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* Reference Card */
+.reference-card {
+  padding: 18px 24px;
+  border: 2px solid #000;
+  border-radius: 18px;
+  background: #fafafa;
+}
+
+.reference-text {
+  margin: 0;
+  color: #000;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.reference-link {
+  display: inline-block;
+  margin: 0 4px;
+  color: #000;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 180ms ease;
+}
+
+.reference-link:hover {
+  color: #6366f1;
+}
+
+.reference-link:first-of-type {
+  margin-left: 6px;
+}
+
+
+@media (max-width: 480px) {
+  .page-title {
+    font-size: 24px;
+  }
+
+  .section-title {
+    font-size: 20px;
+  }
+
+  .subsection-title {
+    font-size: 18px;
+  }
+
+  .section-description {
+    padding: 14px 16px;
+    font-size: 14px;
+  }
+
+  .task-tag {
+    font-size: 12px;
+    padding: 3px 10px;
+  }
+}
