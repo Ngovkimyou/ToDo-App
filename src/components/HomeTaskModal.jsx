@@ -22,9 +22,10 @@ const headerEditIconElement = (
 );
 
 function parseDueDate(dueDate) {
-  const match = /^(\d{2})\/(\d{2})\s+(\d{1,2}):(\d{2})\s+(AM|PM)$/.exec(
-    dueDate || "",
-  );
+  const match =
+    /^(\d{2})\/(\d{2})\/(\d{4})\s+(\d{1,2}):(\d{2})\s+(AM|PM)$/.exec(
+      dueDate || "",
+    );
 
   if (!match) {
     return DEFAULT_DATE_TIME;
@@ -33,9 +34,10 @@ function parseDueDate(dueDate) {
   return {
     day: match[1],
     month: match[2],
-    hour: match[3].padStart(2, "0"),
-    minute: match[4],
-    period: match[5],
+    year: match[3],
+    hour: match[4].padStart(2, "0"),
+    minute: match[5],
+    period: match[6],
   };
 }
 

@@ -6,12 +6,17 @@ import HomeFilterSelect from "../components/HomeFilterSelect";
 import HomeTaskCard from "../components/HomeTaskCard";
 import HomeTaskModal from "../components/HomeTaskModal";
 import { getLocalDateKey, getTaskDueDateKey } from "../utils/date";
+import { groupTasksByCategory } from "../utils/tasks";
 
 import "./Home.css";
 
 function formatDateGroupTitle(dateKey) {
-  const [year, month, day] = dateKey.split("-").map(Number);
-  const date = new Date(year, month - 1, day);
+  const [year, month, day] = dateKey.split("-");
+  const date = new Date(Number(year), Number(month) - 1, Number(day));
+
+  if (Number.isNaN(date.getTime())) {
+    return dateKey;
+  }
 
   return date.toLocaleDateString("en-US", {
     month: "long",
@@ -20,17 +25,37 @@ function formatDateGroupTitle(dateKey) {
   });
 }
 
-function groupTasksByCategory(tasks) {
-  return tasks.reduce((groups, task) => {
-    const category = task.category || "No category";
+function getDateKeyFromDateTime(dateTime) {
+  const match = /^(\d{1,2})\/(\d{1,2})\/(\d{4})/.exec(dateTime || "");
 
-    if (!groups[category]) {
-      groups[category] = [];
-    }
+  if (!match) {
+    return null;
+  }
 
-    groups[category].push(task);
-    return groups;
-  }, {});
+  const day = String(match[1]).padStart(2, "0");
+  const month = String(match[2]).padStart(2, "0");
+  const year = match[3];
+
+  return `${year}-${month}-${day}`;
+}
+
+function formatDateRangeTitle(dateKey, dateTasks) {
+  const startTitle = formatDateGroupTitle(dateKey);
+  const hasOpenEndedTask = dateTasks.some((task) => !task.endDate);
+
+  if (hasOpenEndedTask) {
+    return `${startTitle} --- Onward`;
+  }
+
+  const latestEndDateKey = dateTasks
+    .map((task) => getDateKeyFromDateTime(task.endDate))
+    .filter(Boolean)
+    .sort()
+    .at(-1);
+
+  return `${startTitle} --- ${
+    latestEndDateKey ? formatDateGroupTitle(latestEndDateKey) : "Onward"
+  }`;
 }
 
 function getTaskStartMinutes(task) {
@@ -76,19 +101,11 @@ function Home() {
 
   const normalizedSearchQuery = searchQuery.trim().toLowerCase();
   const filteredTasks = tasks.filter((task) => {
-    if (task.inRecyclingBin) {
-      return false;
-    }
-
     const taskDateKey = getTaskDueDateKey(task);
     const isSelectedDate = displayAllTasks || taskDateKey === selectedDate;
     const isSelectedCategory =
       selectedCategory === "All" || task.category === selectedCategory;
-    const searchableText = [
-      task.title,
-      task.description,
-      task.category,
-    ]
+    const searchableText = [task.title, task.description, task.category]
       .join(" ")
       .toLowerCase();
     const matchesSearch =
@@ -112,6 +129,13 @@ function Home() {
     }, {})
   ).sort(([firstDate], [secondDate]) => firstDate.localeCompare(secondDate));
 
+  function moveTaskToRecyclingBin(task) {
+    deleteTask(task.id);
+    setSelectedTask((currentTask) =>
+      currentTask?.id === task.id ? null : currentTask
+    );
+  }
+
   function renderTaskCard(category, categoryTasks, keyPrefix = "") {
     return (
       <HomeTaskCard
@@ -130,12 +154,7 @@ function Home() {
         onTaskToggleComplete={toggleComplete}
         onCategoryDelete={setCategoryToDelete}
         onCategoryComplete={({ tasks: completedTasks }) => {
-          completedTasks.forEach((task) => {
-            editTask(task.id, {
-              inRecyclingBin: true,
-              recycledAt: new Date().toISOString(),
-            });
-          });
+          completedTasks.forEach(moveTaskToRecyclingBin);
         }}
       />
     );
@@ -186,7 +205,7 @@ function Home() {
             value={searchQuery}
             maxLength={100}
             placeholder="Search tasks"
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(event) => setSearchQuery(event.target.value)}
           />
         </label>
       </section>
@@ -196,7 +215,7 @@ function Home() {
           ? dateGroups.map(([dateKey, dateTasks]) => (
               <section className="home-date-task-group" key={dateKey}>
                 <h2 className="home-date-task-title">
-                  {formatDateGroupTitle(dateKey)}
+                  {formatDateRangeTitle(dateKey, dateTasks)}
                 </h2>
 
                 <div className="home-date-task-list">
@@ -227,33 +246,30 @@ function Home() {
 
       <HomeDeleteConfirm
         item={taskToDelete}
-        title="Delete Task?"
+        title="Move Task to Recycling Bin?"
         message={
           taskToDelete
-            ? `This will permanently delete "${taskToDelete.title}" and its related content.`
+            ? `This will move "${taskToDelete.title}" and its related content to the Recycling Bin.`
             : ""
         }
         onCancel={() => setTaskToDelete(null)}
         onConfirm={() => {
-          deleteTask(taskToDelete.id);
+          moveTaskToRecyclingBin(taskToDelete);
           setTaskToDelete(null);
-          setSelectedTask((currentTask) =>
-            currentTask?.id === taskToDelete.id ? null : currentTask
-          );
         }}
       />
 
       <HomeDeleteConfirm
         item={categoryToDelete}
-        title="Delete Category Tasks?"
+        title="Move Category Tasks to Recycling Bin?"
         message={
           categoryToDelete
-            ? `This will permanently delete all tasks inside "${categoryToDelete.category}".`
+            ? `This will move all tasks inside "${categoryToDelete.category}" to the Recycling Bin.`
             : ""
         }
         onCancel={() => setCategoryToDelete(null)}
         onConfirm={() => {
-          categoryToDelete.tasks.forEach((task) => deleteTask(task.id));
+          categoryToDelete.tasks.forEach(moveTaskToRecyclingBin);
           setCategoryToDelete(null);
           setSelectedTask((currentTask) =>
             categoryToDelete.tasks.some((task) => task.id === currentTask?.id)

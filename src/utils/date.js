@@ -19,15 +19,21 @@ export function getTaskCreatedDateKey(task) {
 }
 
 export function getTaskDueDateKey(task) {
-  const dateMatch = task.dueDate?.match(/^(\d{1,2})\/(\d{1,2})\b/);
+  const match = /^(\d{1,2})\/(\d{1,2})(?:\/(\d{4}))?/.exec(
+    task.dueDate || ""
+  );
 
-  if (!dateMatch) {
+  if (!match) {
     return getTaskCreatedDateKey(task);
   }
 
-  const year = new Date().getFullYear();
-  const day = String(dateMatch[1]).padStart(2, "0");
-  const month = String(dateMatch[2]).padStart(2, "0");
+  const day = String(match[1]).padStart(2, "0");
+  const month = String(match[2]).padStart(2, "0");
+  const year = match[3] || getTaskCreatedDateKey(task).slice(0, 4);
 
   return `${year}-${month}-${day}`;
+}
+
+export function getTaskDayKey(task) {
+  return getTaskDueDateKey(task);
 }

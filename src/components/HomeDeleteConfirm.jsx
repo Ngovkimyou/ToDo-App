@@ -1,7 +1,20 @@
 import { createPortal } from "react-dom";
 
-function HomeDeleteConfirm({ item, title = "Delete Task?", message, onCancel, onConfirm }) {
-  if (!item) {
+function HomeDeleteConfirm({
+  item,
+  task,
+  open,
+  title,
+  heading,
+  message,
+  confirmVariant,
+  onCancel,
+  onConfirm,
+}) {
+  const confirmItem = item || task;
+  const isOpen = open !== undefined ? open : Boolean(confirmItem);
+
+  if (!isOpen) {
     return null;
   }
 
@@ -14,8 +27,10 @@ function HomeDeleteConfirm({ item, title = "Delete Task?", message, onCancel, on
         aria-labelledby="delete-confirm-title"
         onClick={(event) => event.stopPropagation()}
       >
-        <h2 id="delete-confirm-title">{title}</h2>
-        <p>{message}</p>
+        <h2 id="delete-confirm-title">
+          {heading || title || "Delete Task?"}
+        </h2>
+        {message && <p>{message}</p>}
 
         <div className="task-modal-actions">
           <button
@@ -26,7 +41,9 @@ function HomeDeleteConfirm({ item, title = "Delete Task?", message, onCancel, on
             Cancel
           </button>
           <button
-            className="task-modal-close is-danger"
+            className={`task-modal-close ${
+              confirmVariant === "neutral" ? "" : "is-danger"
+            }`}
             type="button"
             onClick={onConfirm}
           >

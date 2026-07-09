@@ -23,6 +23,7 @@ export function getCurrentDateTime() {
   return {
     day: String(now.getDate()).padStart(2, "0"),
     month: String(now.getMonth() + 1).padStart(2, "0"),
+    year: String(now.getFullYear()),
     hour: String(hour12).padStart(2, "0"),
     minute: String(now.getMinutes()).padStart(2, "0"),
     period: rawHour >= 12 ? "PM" : "AM",
@@ -49,6 +50,6 @@ export function getCharacterStatus(length, limit) {
   return "";
 }
 
-export function formatDueDate({ day, month, hour, minute, period }) {
-  return `${day}/${month} ${hour}:${minute} ${period}`;
+export function formatDueDate({ day, month, year, hour, minute, period }) {
+  return `${day}/${month}/${year} ${hour}:${minute} ${period}`;
 }
