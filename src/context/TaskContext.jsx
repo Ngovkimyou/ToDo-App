@@ -11,35 +11,45 @@ export function TaskProvider({ children }) {
   }
 
   function deleteTask(id) {
-    setTasks((currentTasks) => {
-      const taskToDelete = currentTasks.find((task) => task.id === id);
+    const taskToDelete = tasks.find((task) => task.id === id);
 
-      if (!taskToDelete) {
-        return currentTasks;
+    if (!taskToDelete) {
+      return;
+    }
+
+    const recycledTask = {
+      ...taskToDelete,
+      recycledAt: new Date().toISOString(),
+    };
+
+    setTasks((currentTasks) =>
+      currentTasks.filter((task) => task.id !== id)
+    );
+    setDeletedTasks((currentDeletedTasks) => {
+      if (currentDeletedTasks.some((task) => task.id === id)) {
+        return currentDeletedTasks;
       }
 
-      setDeletedTasks((currentDeletedTasks) => [
-        ...currentDeletedTasks,
-        {
-          ...taskToDelete,
-          recycledAt: new Date().toISOString(),
-        },
-      ]);
-
-      return currentTasks.filter((task) => task.id !== id);
+      return [...currentDeletedTasks, recycledTask];
     });
   }
 
   function restoreTask(id) {
-    setDeletedTasks((currentDeletedTasks) => {
-      const taskToRestore = currentDeletedTasks.find((task) => task.id === id);
+    const taskToRestore = deletedTasks.find((task) => task.id === id);
 
-      if (!taskToRestore) {
-        return currentDeletedTasks;
+    if (!taskToRestore) {
+      return;
+    }
+
+    setDeletedTasks((currentDeletedTasks) =>
+      currentDeletedTasks.filter((task) => task.id !== id)
+    );
+    setTasks((currentTasks) => {
+      if (currentTasks.some((task) => task.id === id)) {
+        return currentTasks;
       }
 
-      setTasks((currentTasks) => [...currentTasks, taskToRestore]);
-      return currentDeletedTasks.filter((task) => task.id !== id);
+      return [...currentTasks, taskToRestore];
     });
   }
 
@@ -51,13 +61,18 @@ export function TaskProvider({ children }) {
 
   function restoreTasks(ids) {
     const idSet = new Set(ids);
-    setDeletedTasks((currentDeletedTasks) => {
-      const tasksToRestore = currentDeletedTasks.filter((task) =>
-        idSet.has(task.id)
+    const tasksToRestore = deletedTasks.filter((task) => idSet.has(task.id));
+
+    setDeletedTasks((currentDeletedTasks) =>
+      currentDeletedTasks.filter((task) => !idSet.has(task.id))
+    );
+    setTasks((currentTasks) => {
+      const currentIds = new Set(currentTasks.map((task) => task.id));
+      const newTasks = tasksToRestore.filter(
+        (task) => !currentIds.has(task.id)
       );
 
-      setTasks((currentTasks) => [...currentTasks, ...tasksToRestore]);
-      return currentDeletedTasks.filter((task) => !idSet.has(task.id));
+      return [...currentTasks, ...newTasks];
     });
   }
 
@@ -88,11 +103,18 @@ export function TaskProvider({ children }) {
     );
   }
 
+  const uniqueDeletedTasks = deletedTasks.filter(
+    (task, index, currentDeletedTasks) =>
+      currentDeletedTasks.findIndex(
+        (currentTask) => currentTask.id === task.id
+      ) === index
+  );
+
   return (
     <TaskContext.Provider
       value={{
         tasks,
-        deletedTasks,
+        deletedTasks: uniqueDeletedTasks,
         addTask,
         deleteTask,
         restoreTask,

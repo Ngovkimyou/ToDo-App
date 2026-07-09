@@ -46,6 +46,10 @@ function CreateTask() {
     }));
   }
 
+  function getDateTimeKey(dateTime) {
+    return `${dateTime.year}-${dateTime.month}-${dateTime.day}`;
+  }
+
   function handleSubmit(event) {
     event.preventDefault();
 
@@ -53,11 +57,13 @@ function CreateTask() {
       return;
     }
 
+    const dueDate = formatDueDate(startDateTime);
+
     addTask({
       id: Date.now(),
       title: title.trim(),
       description,
-      dueDate: formatDueDate(startDateTime),
+      dueDate,
       endDate: hasEndDate ? formatDueDate(endDateTime) : "",
       createdAt: new Date().toISOString(),
       createdDate: getLocalDateKey(new Date()),
@@ -65,7 +71,11 @@ function CreateTask() {
       completed: false,
     });
 
-    navigate("/");
+    navigate("/", {
+      state: {
+        selectedDate: getDateTimeKey(startDateTime),
+      },
+    });
   }
 
   return (

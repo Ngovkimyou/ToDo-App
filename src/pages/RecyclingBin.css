@@ -9,11 +9,35 @@
   margin: 0 auto 32px;
 }
 
-.bin-empty {
+.bin-empty-state {
+  min-height: 260px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 18px;
   margin: 40px auto;
-  color: #000;
-  font-weight: 700;
   text-align: center;
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.bin-empty-state img {
+  width: min(220px, 52vw);
+  opacity: 0.16;
+  pointer-events: none;
+  user-select: none;
+}
+
+.bin-empty-state p {
+  margin: 0;
+  -webkit-text-stroke: 1px #fff;
+  paint-order: stroke fill;
+  text-shadow:
+    2px 2px 0 #fff,
+    -2px 2px 0 #fff,
+    2px -2px 0 #fff,
+    -2px -2px 0 #fff;
 }
 
 .bin-page .task-folder-item,
@@ -33,12 +57,21 @@
   transform: none;
 }
 
-.bin-page .task-folder-icon:hover {
+.bin-page .task-folder-icon.is-selection-disabled {
+  cursor: default !important;
+  pointer-events: none;
+}
+
+.bin-page .task-folder-icon.is-selection-disabled * {
+  cursor: default !important;
+}
+
+.bin-page .task-folder-icon.is-selection-disabled:hover {
   box-shadow: none;
   transform: rotate(-12deg);
 }
 
-.bin-page .task-folder-icon:hover img {
+.bin-page .task-folder-icon.is-selection-disabled:hover img {
   transform: rotate(12deg);
 }
 
@@ -154,7 +187,17 @@
 }
 
 .task-folder-icon.is-selectable {
-  cursor: pointer;
+  cursor: pointer !important;
+  pointer-events: auto;
+}
+
+.bin-page .task-folder-icon.is-selectable:hover {
+  box-shadow: 4px 4px 0 #000;
+  transform: rotate(-12deg) translateY(-2px);
+}
+
+.bin-page .task-folder-icon.is-selectable:hover img {
+  transform: rotate(12deg) scale(1.12);
 }
 
 .bin-select-checkbox {
@@ -162,4 +205,25 @@
   height: 26px;
   accent-color: #000;
   cursor: pointer;
+}
+
+@media (max-width: 760px) {
+  .bin-empty-state {
+    min-height: 210px;
+    gap: 12px;
+    font-size: 15px;
+  }
+
+  .bin-empty-state img {
+    width: min(160px, 46vw);
+  }
+
+  .bin-empty-state p {
+    -webkit-text-stroke-width: 0.7px;
+    text-shadow:
+      1.5px 1.5px 0 #fff,
+      -1.5px 1.5px 0 #fff,
+      1.5px -1.5px 0 #fff,
+      -1.5px -1.5px 0 #fff;
+  }
 }

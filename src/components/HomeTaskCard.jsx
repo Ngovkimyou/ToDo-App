@@ -47,6 +47,7 @@ function HomeTaskCard({
     tasks.length === 0 ? 0 : Math.round((completedCount / tasks.length) * 100);
   const isCategoryComplete = progressPercent === 100;
   const isCountdownActive = recyclingCountdown !== null;
+  const isRemovingCategory = isPromptClosing && recyclingCountdown === 0;
   const categoryIcon = categoryIconByValue[category];
 
   useEffect(() => {
@@ -103,16 +104,11 @@ function HomeTaskCard({
     if (recyclingCountdown === 0) {
       setIsPromptClosing(true);
 
-      const timerId = window.setTimeout(() => {
+      window.setTimeout(() => {
         onCategoryComplete({ category, tasks });
-        setShowCompletePrompt(false);
-        setIsPromptClosing(false);
-        setRecyclingCountdown(null);
       }, PROMPT_CLOSE_DURATION);
 
-      return () => {
-        window.clearTimeout(timerId);
-      };
+      return undefined;
     }
 
     const timerId = window.setTimeout(() => {
@@ -135,7 +131,11 @@ function HomeTaskCard({
   ]);
 
   return (
-    <article className="home-task-folder">
+    <article
+      className={`home-task-folder ${
+        isRemovingCategory ? "is-removing" : ""
+      }`}
+    >
       <div className="task-folder-header">
         <div className="task-folder-tab">
           <span className="task-folder-tab-label">

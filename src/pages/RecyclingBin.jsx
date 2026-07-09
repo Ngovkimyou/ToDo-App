@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useTasks } from "../context/TaskContext";
 import BinTaskCard from "../components/BinTaskCard";
 import HomeDeleteConfirm from "../components/HomeDeleteConfirm";
+import emptyItemIcon from "../assets/empty-item.avif";
 import { groupTasksByCategory } from "../utils/tasks";
 
 import "./RecyclingBin.css";
@@ -50,7 +51,10 @@ function RecyclingBin() {
       <h1 className="page-title">Recycling Bin</h1>
 
       {taskGroups.length === 0 ? (
-        <p className="bin-empty">The recycling bin is empty.</p>
+        <div className="bin-empty-state">
+          <img src={emptyItemIcon} alt="" />
+          <p>Your Recycling Bin is empty...</p>
+        </div>
       ) : (
         <>
           <div className="bin-toolbar">

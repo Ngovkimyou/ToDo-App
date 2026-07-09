@@ -42,18 +42,17 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 34px;
+  margin: 90px auto 34px;
 }
 
 .date-strip-title {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  margin: 0 0 18px;
   border: 0;
   background: transparent;
   color: #000;
-  font-family: var(--sans);
+  font-family: "Monoton", var(--sans);
   font-size: 28px;
   font-weight: 800;
   line-height: 1;
@@ -455,6 +454,31 @@
   margin: 0 auto;
 }
 
+.home-empty-state {
+  min-height: 260px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 18px;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.home-empty-state img {
+  width: min(220px, 52vw);
+  opacity: 0.16;
+  pointer-events: none;
+  user-select: none;
+}
+
+.home-empty-state p {
+  margin: 0;
+  -webkit-text-stroke: 2px #fff;
+  paint-order: stroke fill;
+}
+
 .home-date-task-group {
   display: grid;
   gap: 22px;
@@ -468,6 +492,7 @@
   border-radius: 999px;
   background: #000;
   color: #fff;
+  font-family: "Monoton", var(--sans);
   font-size: 22px;
   font-weight: 800;
   box-shadow: 5px 5px 0 #fff;
@@ -480,6 +505,13 @@
 
 .home-task-folder {
   color: #000;
+}
+
+.home-task-folder.is-removing {
+  overflow: hidden;
+  pointer-events: none;
+  transform-origin: top;
+  animation: task-folder-remove 260ms ease both;
 }
 
 .task-folder-header {
@@ -1729,6 +1761,20 @@
   }
 }
 
+@keyframes task-folder-remove {
+  from {
+    max-height: 900px;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-16px) scale(0.98);
+  }
+}
+
 @media (max-width: 760px) {
   .home-page {
     --task-time-column-width: 58px;
@@ -1761,7 +1807,6 @@
   }
 
   .date-strip-title {
-    margin-bottom: 10px;
     font-size: 22px;
   }
 
@@ -1856,6 +1901,20 @@
   .home-task-list,
   .home-date-task-list {
     gap: 22px;
+  }
+
+  .home-empty-state {
+    min-height: 210px;
+    gap: 12px;
+    font-size: 15px;
+  }
+
+  .home-empty-state img {
+    width: min(160px, 46vw);
+  }
+
+  .home-empty-state p {
+    -webkit-text-stroke-width: 1.5px;
   }
 
   .home-date-task-title {

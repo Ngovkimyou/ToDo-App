@@ -3,6 +3,7 @@ import Calendar from "../components/Calendar";
 import HomeDeleteConfirm from "../components/HomeDeleteConfirm";
 import HomeTaskCard from "../components/HomeTaskCard";
 import HomeTaskModal from "../components/HomeTaskModal";
+import emptyItemIcon from "../assets/empty-item.avif";
 import { useTasks } from "../context/TaskContext";
 import { getLocalDateKey, getTaskDayKey } from "../utils/date";
 import { groupTasksByCategory } from "../utils/tasks";
@@ -68,7 +69,10 @@ function CalendarPage() {
         <h2 className="calendar-day-tasks-title">{selectedDateLabel}</h2>
 
         {taskGroups.length === 0 && (
-          <p className="calendar-no-tasks">No tasks on this day.</p>
+          <div className="calendar-empty-state">
+            <img src={emptyItemIcon} alt="" />
+            <p>No tasks scheduled for this day...</p>
+          </div>
         )}
 
         <div className="home-task-list">

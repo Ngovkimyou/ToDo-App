@@ -9,7 +9,6 @@ function About() {
       <div className="about-content">
         {/*project description*/}
         <section className="about-section">
-          <h2 className="section-title">ToDo App</h2>
           <p className="section-description">
             ToDo App is developed by a group of students in the purpose of making a viable website for users to keep track of their works and tasks effectively. It is designed with minimal but breathtaking style to help users focus and organzie their future events.
           </p>
@@ -80,17 +79,20 @@ function About() {
         <section className="about-section">
           <h3 className="subsection-title">Reference &amp; Assets</h3>
           <div className="reference-card">
-            <p className="reference-text">
-              All icons and assection in this project are sourced from
+            <p>
+              Icons are edited by <strong>Kimyoo</strong>. Free icons are here: 
               <a 
-                  href="https://heroicons.com/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="reference-link"
-                >
-                  Heroicons
-                </a>
-                and 
+                href="https://github.com/Ngovkimyou/Dora-assets" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="reference-link"
+              >
+                ToDo List Assets
+              </a>
+              .
+            </p>
+            <p className="reference-text">
+              Fonts used in this project are sourced from
                 <a 
                   href="https://fonts.google.com/" 
                   target="_blank" 
@@ -100,12 +102,12 @@ function About() {
                   Google Fonts
                 </a>
                 .
-              </p>
-            </div>
-          </section>
-        </div>
+            </p>
+          </div>
+        </section>
       </div>
-    );    
+    </div>
+  );    
 }
 
 

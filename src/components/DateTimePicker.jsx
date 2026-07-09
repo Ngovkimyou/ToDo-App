@@ -47,7 +47,7 @@ function DateTimePicker({ legend = "Date and Time", value, onChange }) {
 
       <div className="date-time-grid">
         {dateTimeFields.map((field) => (
-          <label key={field.key}>
+          <label className={`date-time-field-${field.key}`} key={field.key}>
             <span>{field.label}</span>
             <SmartSelect
               value={value[field.key]}

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useTasks } from "../context/TaskContext";
 import HomeDateStrip from "../components/HomeDateStrip";
 import HomeDeleteConfirm from "../components/HomeDeleteConfirm";
 import HomeFilterSelect from "../components/HomeFilterSelect";
 import HomeTaskCard from "../components/HomeTaskCard";
 import HomeTaskModal from "../components/HomeTaskModal";
+import emptyItemIcon from "../assets/empty-item.avif";
 import { getLocalDateKey, getTaskDueDateKey } from "../utils/date";
 import { groupTasksByCategory } from "../utils/tasks";
 
@@ -89,17 +91,26 @@ function sortTasksByStartTime(tasks) {
 }
 
 function Home() {
+  const location = useLocation();
   const { tasks, editTask, deleteTask, toggleComplete } = useTasks();
   const [displayAllTasks, setDisplayAllTasks] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedDate, setSelectedDate] = useState(getLocalDateKey(new Date()));
+  const [selectedDate, setSelectedDate] = useState(
+    location.state?.selectedDate || getLocalDateKey(new Date())
+  );
   const [selectedTask, setSelectedTask] = useState(null);
   const [selectedTaskMode, setSelectedTaskMode] = useState("view");
   const [taskToDelete, setTaskToDelete] = useState(null);
   const [categoryToDelete, setCategoryToDelete] = useState(null);
 
   const normalizedSearchQuery = searchQuery.trim().toLowerCase();
+  const trimmedSearchQuery = searchQuery.trim();
+  const emptySearchLabel =
+    trimmedSearchQuery.length > 10
+      ? `${trimmedSearchQuery.slice(0, 10)}...`
+      : trimmedSearchQuery;
+  const hasAnyTasks = tasks.length > 0;
   const filteredTasks = tasks.filter((task) => {
     const taskDateKey = getTaskDueDateKey(task);
     const isSelectedDate = displayAllTasks || taskDateKey === selectedDate;
@@ -115,6 +126,14 @@ function Home() {
     return isSelectedDate && isSelectedCategory && matchesSearch;
   });
   const sortedTasks = sortTasksByStartTime(filteredTasks);
+  const hasVisibleTasks = sortedTasks.length > 0;
+  const emptyStateMessage = normalizedSearchQuery
+    ? `No tasks found for "${emptySearchLabel}"`
+    : selectedCategory !== "All"
+      ? `No tasks found in ${selectedCategory}`
+      : hasAnyTasks
+        ? "No tasks scheduled for this day..."
+        : "No tasks have been created yet...";
   const taskGroups = Object.entries(groupTasksByCategory(sortedTasks));
   const dateGroups = Object.entries(
     sortedTasks.reduce((groups, task) => {
@@ -177,8 +196,10 @@ function Home() {
 
   return (
     <div className="home-page">
-      <h1 className="page-title">Home</h1>
-      <HomeDateStrip onDateChange={setSelectedDate} />
+      <HomeDateStrip
+        selectedDateKey={selectedDate}
+        onDateChange={setSelectedDate}
+      />
 
       <section className="home-task-controls" aria-label="Filter tasks">
         <label className="display-all-toggle">
@@ -211,24 +232,31 @@ function Home() {
       </section>
 
       <section className="home-task-list" aria-label="Tasks">
-        {displayAllTasks
-          ? dateGroups.map(([dateKey, dateTasks]) => (
-              <section className="home-date-task-group" key={dateKey}>
-                <h2 className="home-date-task-title">
-                  {formatDateRangeTitle(dateKey, dateTasks)}
-                </h2>
+        {!hasVisibleTasks ? (
+          <div className="home-empty-state">
+            <img src={emptyItemIcon} alt="" />
+            <p>{emptyStateMessage}</p>
+          </div>
+        ) : displayAllTasks ? (
+          dateGroups.map(([dateKey, dateTasks]) => (
+            <section className="home-date-task-group" key={dateKey}>
+              <h2 className="home-date-task-title">
+                {formatDateRangeTitle(dateKey, dateTasks)}
+              </h2>
 
-                <div className="home-date-task-list">
-                  {Object.entries(groupTasksByCategory(dateTasks)).map(
-                    ([category, categoryTasks]) =>
-                      renderTaskCard(category, categoryTasks, `${dateKey}-`)
-                  )}
-                </div>
-              </section>
-            ))
-          : taskGroups.map(([category, categoryTasks]) =>
-              renderTaskCard(category, categoryTasks)
-            )}
+              <div className="home-date-task-list">
+                {Object.entries(groupTasksByCategory(dateTasks)).map(
+                  ([category, categoryTasks]) =>
+                    renderTaskCard(category, categoryTasks, `${dateKey}-`)
+                )}
+              </div>
+            </section>
+          ))
+        ) : (
+          taskGroups.map(([category, categoryTasks]) =>
+            renderTaskCard(category, categoryTasks)
+          )
+        )}
       </section>
 
       <HomeTaskModal

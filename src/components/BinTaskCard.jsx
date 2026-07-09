@@ -25,7 +25,9 @@ function BinTaskCard({
               <span
                 className={`task-folder-icon ${
                   task.completed ? "is-completed" : ""
-                } ${selectMode ? "is-selectable" : ""}`}
+                } ${
+                  selectMode ? "is-selectable" : "is-selection-disabled"
+                }`}
                 onClick={
                   selectMode ? () => onTaskToggleSelect(task.id) : undefined
                 }

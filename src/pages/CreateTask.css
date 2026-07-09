@@ -154,8 +154,18 @@
 
 .date-time-grid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(80px, 1fr));
+  grid-template-columns:
+    minmax(80px, 1fr)
+    minmax(80px, 1fr)
+    minmax(112px, 1.3fr)
+    minmax(80px, 1fr)
+    minmax(80px, 1fr)
+    minmax(80px, 1fr);
   gap: 12px;
+}
+
+.date-time-field-year .smart-select-control {
+  grid-template-columns: minmax(68px, 1fr) 42px;
 }
 
 .date-time-picker label {

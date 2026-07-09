@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { getLocalDateKey } from "../utils/date";
 
 const DAY_COUNT = 7;
@@ -6,13 +6,24 @@ const VISIBLE_COUNT = 5;
 const CENTER_INDEX = Math.floor(VISIBLE_COUNT / 2);
 const TODAY_INDEX = Math.floor(DAY_COUNT / 2);
 
-function buildDateRange() {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+function createDateFromKey(dateKey) {
+  const [year, month, day] = (dateKey || "").split("-").map(Number);
+  const date = new Date(year, month - 1, day);
+
+  if (Number.isNaN(date.getTime())) {
+    return new Date();
+  }
+
+  return date;
+}
+
+function buildDateRange(centerDate = new Date()) {
+  const baseDate = new Date(centerDate);
+  baseDate.setHours(0, 0, 0, 0);
 
   return Array.from({ length: DAY_COUNT }, (_, index) => {
-    const date = new Date(today);
-    date.setDate(today.getDate() + index - TODAY_INDEX);
+    const date = new Date(baseDate);
+    date.setDate(baseDate.getDate() + index - TODAY_INDEX);
     return date;
   });
 }
@@ -41,12 +52,16 @@ function getVisiblePositionClass(dateIndex, selectedIndex) {
   return `date-card-position-${visiblePosition + 1}`;
 }
 
-function HomeDateStrip({ onDateChange }) {
-  const dates = useMemo(buildDateRange, []);
+function HomeDateStrip({ selectedDateKey, onDateChange }) {
+  const [dates, setDates] = useState(() =>
+    buildDateRange(createDateFromKey(selectedDateKey))
+  );
   const [selectedIndex, setSelectedIndex] = useState(TODAY_INDEX);
 
   const trackOffset = selectedIndex - CENTER_INDEX;
   const selectedDate = dates[selectedIndex];
+  const isTodaySelected =
+    getLocalDateKey(selectedDate) === getLocalDateKey(new Date());
   const monthTitle = selectedDate.toLocaleDateString("en-US", {
     month: "long",
     year: "numeric",
@@ -66,8 +81,26 @@ function HomeDateStrip({ onDateChange }) {
   }
 
   function resetToToday() {
-    selectDate(TODAY_INDEX);
+    const todayRange = buildDateRange();
+    setDates(todayRange);
+    setSelectedIndex(TODAY_INDEX);
+    onDateChange?.(getLocalDateKey(todayRange[TODAY_INDEX]));
   }
+
+  useEffect(() => {
+    const matchingIndex = dates.findIndex(
+      (date) => getLocalDateKey(date) === selectedDateKey
+    );
+
+    if (matchingIndex !== -1) {
+      setSelectedIndex(matchingIndex);
+      return;
+    }
+
+    const nextDate = createDateFromKey(selectedDateKey);
+    setDates(buildDateRange(nextDate));
+    setSelectedIndex(TODAY_INDEX);
+  }, [dates, selectedDateKey]);
 
   return (
     <section className="home-date-strip" aria-label="Choose task date">
@@ -76,7 +109,7 @@ function HomeDateStrip({ onDateChange }) {
         type="button"
         onClick={resetToToday}
         aria-label="Return to today"
-        disabled={selectedIndex === TODAY_INDEX}
+        disabled={isTodaySelected}
       >
         {monthTitle}
         <span className="date-title-reset" aria-hidden="true">
