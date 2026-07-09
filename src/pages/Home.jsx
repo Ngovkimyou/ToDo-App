@@ -33,6 +33,36 @@ function groupTasksByCategory(tasks) {
   }, {});
 }
 
+function getTaskStartMinutes(task) {
+  const match = /\b(\d{1,2}):(\d{2})\s*(AM|PM)\b/i.exec(
+    task.dueDate || ""
+  );
+
+  if (!match) {
+    return Number.MAX_SAFE_INTEGER;
+  }
+
+  const hour = Number(match[1]);
+  const minute = Number(match[2]);
+  const period = match[3].toUpperCase();
+  const normalizedHour = (hour % 12) + (period === "PM" ? 12 : 0);
+
+  return normalizedHour * 60 + minute;
+}
+
+function sortTasksByStartTime(tasks) {
+  return [...tasks].sort((firstTask, secondTask) => {
+    const timeDifference =
+      getTaskStartMinutes(firstTask) - getTaskStartMinutes(secondTask);
+
+    if (timeDifference !== 0) {
+      return timeDifference;
+    }
+
+    return (firstTask.id || 0) - (secondTask.id || 0);
+  });
+}
+
 function Home() {
   const { tasks, editTask, deleteTask, toggleComplete } = useTasks();
   const [displayAllTasks, setDisplayAllTasks] = useState(false);
@@ -67,9 +97,10 @@ function Home() {
 
     return isSelectedDate && isSelectedCategory && matchesSearch;
   });
-  const taskGroups = Object.entries(groupTasksByCategory(filteredTasks));
+  const sortedTasks = sortTasksByStartTime(filteredTasks);
+  const taskGroups = Object.entries(groupTasksByCategory(sortedTasks));
   const dateGroups = Object.entries(
-    filteredTasks.reduce((groups, task) => {
+    sortedTasks.reduce((groups, task) => {
       const dateKey = getTaskDueDateKey(task);
 
       if (!groups[dateKey]) {
@@ -153,6 +184,7 @@ function Home() {
           <input
             type="search"
             value={searchQuery}
+            maxLength={100}
             placeholder="Search tasks"
             onChange={(e) => setSearchQuery(e.target.value)}
           />

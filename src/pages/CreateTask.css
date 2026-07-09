@@ -162,6 +162,128 @@
   text-align: center;
 }
 
+.ending-date-section {
+  display: grid;
+  gap: 14px;
+}
+
+.ending-date-toggle {
+  min-height: 58px;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 130px;
+  align-items: center;
+  gap: 14px;
+  padding: 0 18px;
+  border: 2px solid #000;
+  border-radius: 999px;
+  box-sizing: border-box;
+  background: #fff;
+  color: #000;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease,
+    color 180ms ease;
+}
+
+.ending-date-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 #000;
+}
+
+.ending-date-toggle input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ending-date-switch {
+  width: 130px;
+  min-height: 42px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-self: end;
+  justify-content: center;
+  padding: 0;
+  border: 2px solid #000;
+  border-radius: 999px;
+  box-sizing: border-box;
+  background: #fff;
+  transition:
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.ending-date-status {
+  position: absolute;
+  font-size: 13px;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+  transition:
+    color 180ms ease,
+    opacity 180ms ease,
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ending-date-status-enabled {
+  left: 14px;
+  color: #fff;
+  opacity: 0;
+  text-align: left;
+  transform: translateX(10px);
+}
+
+.ending-date-status-unenabled {
+  right: 14px;
+  color: #000;
+  opacity: 1;
+  text-align: right;
+  transform: translateX(0);
+}
+
+.ending-date-knob {
+  width: 28px;
+  height: 28px;
+  display: block;
+  position: absolute;
+  left: 7px;
+  border: 2px solid #000;
+  border-radius: 50%;
+  box-sizing: border-box;
+  background: #000;
+  transition:
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 180ms ease;
+}
+
+.ending-date-toggle input:checked + .ending-date-switch {
+  background: #000;
+}
+
+.ending-date-toggle input:checked + .ending-date-switch .ending-date-status {
+  color: #fff;
+}
+
+.ending-date-toggle input:checked + .ending-date-switch .ending-date-status-enabled {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.ending-date-toggle input:checked + .ending-date-switch .ending-date-status-unenabled {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+.ending-date-toggle input:checked + .ending-date-switch .ending-date-knob {
+  background: #fff;
+  transform: translateX(88px);
+}
+
 .date-time-picker select {
   min-height: 52px;
   padding: 0 10px;

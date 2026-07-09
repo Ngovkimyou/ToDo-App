@@ -6,10 +6,10 @@ import DateTimePicker from "../components/DateTimePicker";
 import { useTasks } from "../context/TaskContext";
 import { getLocalDateKey } from "../utils/date";
 import {
-  DEFAULT_DATE_TIME,
   DESCRIPTION_LIMIT,
   TITLE_LIMIT,
   formatDueDate,
+  getCurrentDateTime,
   getCharacterStatus,
 } from "../utils/taskForm";
 import "./CreateTask.css";
@@ -20,7 +20,9 @@ function CreateTask() {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [dateTime, setDateTime] = useState(DEFAULT_DATE_TIME);
+  const [startDateTime, setStartDateTime] = useState(getCurrentDateTime);
+  const [endDateTime, setEndDateTime] = useState(getCurrentDateTime);
+  const [hasEndDate, setHasEndDate] = useState(false);
   const [category, setCategory] = useState("");
 
   const canCreateTask = title.trim().length > 0;
@@ -30,8 +32,15 @@ function CreateTask() {
     DESCRIPTION_LIMIT
   );
 
-  function handleDateTimeChange(field, value) {
-    setDateTime((currentDateTime) => ({
+  function handleStartDateTimeChange(field, value) {
+    setStartDateTime((currentDateTime) => ({
+      ...currentDateTime,
+      [field]: value,
+    }));
+  }
+
+  function handleEndDateTimeChange(field, value) {
+    setEndDateTime((currentDateTime) => ({
       ...currentDateTime,
       [field]: value,
     }));
@@ -48,7 +57,8 @@ function CreateTask() {
       id: Date.now(),
       title: title.trim(),
       description,
-      dueDate: formatDueDate(dateTime),
+      dueDate: formatDueDate(startDateTime),
+      endDate: hasEndDate ? formatDueDate(endDateTime) : "",
       createdAt: new Date().toISOString(),
       createdDate: getLocalDateKey(new Date()),
       category,
@@ -82,7 +92,39 @@ function CreateTask() {
           onChange={setDescription}
         />
 
-        <DateTimePicker value={dateTime} onChange={handleDateTimeChange} />
+        <DateTimePicker
+          legend="Starting Date and Time"
+          value={startDateTime}
+          onChange={handleStartDateTimeChange}
+        />
+
+        <section className="ending-date-section">
+          <label className="ending-date-toggle">
+            <span>Ending Date and Time</span>
+            <input
+              type="checkbox"
+              checked={hasEndDate}
+              onChange={(event) => setHasEndDate(event.target.checked)}
+            />
+            <span className="ending-date-switch" aria-hidden="true">
+              <span className="ending-date-status ending-date-status-enabled">
+                Enabled
+              </span>
+              <span className="ending-date-status ending-date-status-unenabled">
+                Unenabled
+              </span>
+              <span className="ending-date-knob" />
+            </span>
+          </label>
+
+          {hasEndDate && (
+            <DateTimePicker
+              legend="Ending Date and Time"
+              value={endDateTime}
+              onChange={handleEndDateTimeChange}
+            />
+          )}
+        </section>
 
         <CategorySelect value={category} onChange={setCategory} />
 

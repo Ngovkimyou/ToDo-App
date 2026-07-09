@@ -512,7 +512,21 @@
   box-shadow: 6px 0 0 #000;
 }
 
-.task-folder-tab span {
+.task-folder-tab-label {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.task-folder-tab-label img {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+
+.task-folder-tab-label span {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -650,6 +664,36 @@
 
 .task-folder-item:hover {
   background: rgba(0, 0, 0, 0.06);
+}
+
+.task-folder-item.is-countdown-locked {
+  cursor: pointer;
+}
+
+.task-folder-item.is-countdown-locked:hover {
+  background: rgba(200, 247, 197, 0.35);
+}
+
+.task-folder-item.is-countdown-locked .task-folder-main {
+  transform: none;
+}
+
+.task-folder-item.is-countdown-locked .task-folder-info,
+.task-folder-item.is-countdown-locked .task-menu-wrap {
+  opacity: 0.45;
+}
+
+.task-folder-item.is-countdown-locked .task-menu-button,
+.task-folder-item.is-countdown-locked .task-menu-action,
+.task-folder-tab-delete:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.task-folder-tab-delete:disabled {
+  opacity: 0.45;
+  box-shadow: none;
+  transform: none;
 }
 
 .task-folder-item:active {

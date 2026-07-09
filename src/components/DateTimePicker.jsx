@@ -15,7 +15,7 @@ const dateTimeFields = [
   { key: "period", label: "AM/PM", options: ["AM", "PM"] },
 ];
 
-function DateTimePicker({ value, onChange }) {
+function DateTimePicker({ legend = "Date and Time", value, onChange }) {
   const pickerRef = useRef(null);
   const [openField, setOpenField] = useState(null);
   const [dropdownDirection, setDropdownDirection] = useState("down");
@@ -36,7 +36,7 @@ function DateTimePicker({ value, onChange }) {
 
   return (
     <fieldset ref={pickerRef} className="date-time-picker">
-      <legend>Date and Time</legend>
+      <legend>{legend}</legend>
 
       <div className="date-time-grid">
         {dateTimeFields.map((field) => (

@@ -6,8 +6,13 @@ import editIcon from "../assets/edit-icon.avif";
 import whiteEditIcon from "../assets/white-edit-icon.avif";
 import blackRecyclingIcon from "../assets/black-RecyclingBin-icon.avif";
 import recyclingIcon from "../assets/RecyclingBin-icon.avif";
+import { CATEGORY_OPTIONS } from "../utils/taskForm";
 
 const PROMPT_CLOSE_DURATION = 260;
+const categoryIconByValue = CATEGORY_OPTIONS.reduce((icons, option) => {
+  icons[option.value] = option.icon;
+  return icons;
+}, {});
 
 function getTaskStartLabel(dueDate) {
   const timeMatch = dueDate?.match(/\b(\d{1,2}):(\d{2})\s*(AM|PM)\b/i);
@@ -17,6 +22,10 @@ function getTaskStartLabel(dueDate) {
   }
 
   return `${Number(timeMatch[1])}:${timeMatch[2]} ${timeMatch[3].toUpperCase()}`;
+}
+
+function getTaskEndLabel(endDate) {
+  return endDate ? getTaskStartLabel(endDate) : "Onward";
 }
 
 function HomeTaskCard({
@@ -37,6 +46,8 @@ function HomeTaskCard({
   const progressPercent =
     tasks.length === 0 ? 0 : Math.round((completedCount / tasks.length) * 100);
   const isCategoryComplete = progressPercent === 100;
+  const isCountdownActive = recyclingCountdown !== null;
+  const categoryIcon = categoryIconByValue[category];
 
   useEffect(() => {
     function closeMenu() {
@@ -49,6 +60,12 @@ function HomeTaskCard({
       document.removeEventListener("pointerdown", closeMenu);
     };
   }, []);
+
+  useEffect(() => {
+    if (isCountdownActive) {
+      setOpenMenuTaskId(null);
+    }
+  }, [isCountdownActive]);
 
   useEffect(() => {
     if (isCategoryComplete) {
@@ -121,11 +138,15 @@ function HomeTaskCard({
     <article className="home-task-folder">
       <div className="task-folder-header">
         <div className="task-folder-tab">
-          <span>{category}</span>
+          <span className="task-folder-tab-label">
+            {categoryIcon && <img src={categoryIcon} alt="" />}
+            <span>{category}</span>
+          </span>
           <button
             className="task-folder-tab-delete"
             type="button"
             aria-label={`Delete ${category} category tasks`}
+            disabled={isCountdownActive}
             onClick={() => onCategoryDelete({ category, tasks })}
           >
             x
@@ -159,7 +180,9 @@ function HomeTaskCard({
                 {getTaskStartLabel(task.dueDate)}
               </span>
               <span className="task-time-line" />
-              <span className="task-time-label">Onward</span>
+              <span className="task-time-label">
+                {getTaskEndLabel(task.endDate)}
+              </span>
             </div>
           ))}
         </div>
@@ -167,14 +190,30 @@ function HomeTaskCard({
         <div className="task-folder-body">
           {tasks.map((task) => (
             <div
-              className="task-folder-item"
+              className={`task-folder-item ${
+                isCountdownActive ? "is-countdown-locked" : ""
+              }`}
               key={task.id}
               role="button"
-              tabIndex={0}
-              onClick={() => onTaskSelect(task)}
+              tabIndex={isCountdownActive ? -1 : 0}
+              aria-disabled={isCountdownActive}
+              onClick={() => {
+                if (isCountdownActive) {
+                  onTaskToggleComplete(task.id);
+                  return;
+                }
+
+                onTaskSelect(task);
+              }}
               onKeyDown={(event) => {
                 if (event.key === "Enter" || event.key === " ") {
                   event.preventDefault();
+
+                  if (isCountdownActive) {
+                    onTaskToggleComplete(task.id);
+                    return;
+                  }
+
                   onTaskSelect(task);
                 }
               }}
@@ -216,7 +255,12 @@ function HomeTaskCard({
                   className="task-menu-button"
                   type="button"
                   aria-label="Task menu"
+                  disabled={isCountdownActive}
                   onClick={() => {
+                    if (isCountdownActive) {
+                      return;
+                    }
+
                     setOpenMenuTaskId((currentTaskId) =>
                       currentTaskId === task.id ? null : task.id
                     );
@@ -235,6 +279,7 @@ function HomeTaskCard({
                     className="task-menu-action"
                     type="button"
                     aria-label="Edit task"
+                    disabled={isCountdownActive}
                     onClick={() => {
                       setOpenMenuTaskId(null);
                       onTaskEdit(task);
@@ -252,6 +297,7 @@ function HomeTaskCard({
                     className="task-menu-action is-danger"
                     type="button"
                     aria-label="Delete task"
+                    disabled={isCountdownActive}
                     onClick={() => {
                       setOpenMenuTaskId(null);
                       onTaskDelete(task);

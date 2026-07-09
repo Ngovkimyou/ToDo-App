@@ -45,6 +45,7 @@ function createDraftTask(task) {
       title: "",
       description: "",
       dueDate: "",
+      endDate: "",
       category: "",
     };
   }
@@ -54,6 +55,7 @@ function createDraftTask(task) {
     title: task.title || "",
     description: task.description || "",
     dueDate: task.dueDate || "",
+    endDate: task.endDate || "",
     category: task.category || "",
   };
 }
@@ -232,6 +234,11 @@ function HomeTaskModal({ task, startInEditMode = false, onSave, onClose }) {
           ) : (
             <p>{task.dueDate || "No date"}</p>
           )}
+        </div>
+
+        <div className="task-modal-field">
+          <span>Ending Date</span>
+          <p>{task.endDate || "Onward"}</p>
         </div>
 
         <div className="task-modal-field">

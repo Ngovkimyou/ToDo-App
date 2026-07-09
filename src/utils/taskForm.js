@@ -15,13 +15,21 @@ export const CATEGORY_OPTIONS = [
   { value: "Other", label: "Other", icon: otherIcon },
 ];
 
-export const DEFAULT_DATE_TIME = {
-  day: "01",
-  month: "01",
-  hour: "12",
-  minute: "00",
-  period: "AM",
-};
+export function getCurrentDateTime() {
+  const now = new Date();
+  const rawHour = now.getHours();
+  const hour12 = rawHour % 12 || 12;
+
+  return {
+    day: String(now.getDate()).padStart(2, "0"),
+    month: String(now.getMonth() + 1).padStart(2, "0"),
+    hour: String(hour12).padStart(2, "0"),
+    minute: String(now.getMinutes()).padStart(2, "0"),
+    period: rawHour >= 12 ? "PM" : "AM",
+  };
+}
+
+export const DEFAULT_DATE_TIME = getCurrentDateTime();
 
 export function createNumberOptions(length, start = 0) {
   return Array.from({ length }, (_, index) =>
