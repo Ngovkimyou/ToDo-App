@@ -1,13 +1,41 @@
+/* ======================================================
+                    Create Task Page Shell
+   ====================================================== */
 .create-task-page {
   max-width: 720px;
   margin: 0 auto;
 }
 
+/* ======================================================
+                    Page Heading
+   ====================================================== */
+.create-task-heading {
+  position: relative;
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
+  align-items: center;
+  gap: 12px;
+}
+
+.create-task-heading .page-title {
+  grid-column: 2;
+}
+
+.create-task-heading .keyboard-help-button {
+  grid-column: 3;
+}
+
+/* ======================================================
+                    Task Form Layout
+   ====================================================== */
 .task-form {
   display: grid;
   gap: 18px;
 }
 
+/* ======================================================
+                    Form Fields
+   ====================================================== */
 .form-field,
 .date-time-picker label {
   display: grid;
@@ -77,6 +105,9 @@
   resize: none;
 }
 
+/* ======================================================
+                    Character Limited Fields
+   ====================================================== */
 .limited-field {
   position: relative;
 }
@@ -138,6 +169,9 @@
   box-shadow: 4px 4px 0 #d71920;
 }
 
+/* ======================================================
+                    Date And Time Picker
+   ====================================================== */
 .date-time-picker {
   margin: 0;
   padding: 18px;
@@ -172,6 +206,9 @@
   text-align: center;
 }
 
+/* ======================================================
+                    Ending Date Toggle
+   ====================================================== */
 .ending-date-section {
   display: grid;
   gap: 14px;
@@ -294,6 +331,9 @@
   transform: translateX(88px);
 }
 
+/* ======================================================
+                    Smart Select
+   ====================================================== */
 .date-time-picker select {
   min-height: 52px;
   padding: 0 10px;
@@ -487,6 +527,9 @@
   color: #fff;
 }
 
+/* ======================================================
+                    Create Task Button
+   ====================================================== */
 .create-task-button {
   min-height: 58px;
   border: 2px solid #000;
@@ -529,8 +572,29 @@
   transform: none;
 }
 
+/* ======================================================
+                    Mobile Create Task
+   ====================================================== */
 @media (max-width: 900px) {
+  .create-task-heading {
+    grid-template-columns: 1fr;
+  }
+
+  .create-task-heading .page-title {
+    grid-column: 1;
+  }
+
+  .create-task-heading .keyboard-help-button {
+    display: none;
+  }
+
   .date-time-grid {
     grid-template-columns: repeat(2, minmax(120px, 1fr));
+  }
+
+  .ending-date-toggle > span:first-child {
+    font-size: 13px;
+    line-height: 1;
+    white-space: nowrap;
   }
 }

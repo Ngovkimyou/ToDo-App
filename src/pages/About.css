@@ -1,3 +1,6 @@
+/* ======================================================
+                    About Page Shell
+   ====================================================== */
 .about-page {
   max-width: 900px;
   margin: 0 auto;
@@ -13,6 +16,9 @@
   transition: none !important;
 }
 
+/* ======================================================
+                    About Content Layout
+   ====================================================== */
 .about-content {
   display: grid;
   gap: 32px;
@@ -49,7 +55,9 @@
   line-height: 1.7;
 }
 
-/* Instructor */
+/* ======================================================
+                    Instructor
+   ====================================================== */
 .instructor-card {
   padding: 16px 24px;
   border: 2px solid #000;
@@ -64,7 +72,9 @@
   font-weight: 700;
 }
 
-/* Team Grid */
+/* ======================================================
+                    Team Grid
+   ====================================================== */
 .team-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -81,7 +91,6 @@
   text-align: center; /* Center all content in team cards */
 }
 
-/* Removed the special styling for team leader - now same as others */
 .team-role {
   color: #666;
   font-size: 13px;
@@ -114,7 +123,9 @@
   font-weight: 600;
 }
 
-/* Technology Grid */
+/* ======================================================
+                    Technology Grid
+   ====================================================== */
 .tech-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -145,7 +156,9 @@
   font-weight: 700;
 }
 
-/* Reference Card */
+/* ======================================================
+                    Reference Card
+   ====================================================== */
 .reference-card {
   padding: 18px 24px;
   border: 2px solid #000;
@@ -179,6 +192,9 @@
   margin-left: 6px;
 }
 
+/* ======================================================
+                    Mobile About Page
+   ====================================================== */
 @media (max-width: 480px) {
   .page-title {
     font-size: 24px;

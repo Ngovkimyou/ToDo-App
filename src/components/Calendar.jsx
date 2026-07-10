@@ -19,8 +19,9 @@ const MONTH_NAMES = [
   "December",
 ];
 
-// Builds the 42 cells (6 weeks) for the day grid. Cells that belong to the
-// previous or next month carry an offset so a click can jump to that month.
+//================ Calendar Grid Helpers ================
+// Builds the 42 cells (6 weeks) for the day grid. Cells from neighboring
+// months keep an offset so clicking them can navigate to that month.
 function getCalendarCells(year, month) {
   const firstWeekday = (new Date(year, month, 1).getDay() + 6) % 7; // Monday = 0
   const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -54,8 +55,7 @@ function Calendar({ selectedDate, onDaySelect, markedDates = [] }) {
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth());
   const [view, setView] = useState("days"); // "days" | "months" | "years"
-  // Animation class for the body: "slide-left", "slide-right",
-  // "zoom-in" (drill down) or "zoom-out" (drill up).
+  // Animation class for body transitions between day, month, and year views.
   const [animation, setAnimation] = useState("");
 
   const startYear = Math.floor(year / 12) * 12;
@@ -66,11 +66,10 @@ function Calendar({ selectedDate, onDaySelect, markedDates = [] }) {
     yearRange.push(y);
   }
 
-  // The body remounts whenever this key changes, which restarts the
-  // CSS animation. It changes on every navigation, but not when a day
-  // in the current month is selected.
+  // Remount the body when navigation changes so CSS animations restart cleanly.
   const bodyKey = view + "-" + year + "-" + month;
 
+  //================ Calendar Navigation ================
   function goPrevious() {
     setAnimation("slide-right");
     if (view === "days") {
@@ -143,6 +142,7 @@ function Calendar({ selectedDate, onDaySelect, markedDates = [] }) {
     }
   }
 
+  //================ Task Marker Checks ================
   function hasTasksInMonth(monthIndex) {
     const monthKey = `${year}-${String(monthIndex + 1).padStart(2, "0")}`;
 

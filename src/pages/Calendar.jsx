@@ -4,7 +4,7 @@ import HomeDeleteConfirm from "../components/HomeDeleteConfirm";
 import HomeTaskCard from "../components/HomeTaskCard";
 import HomeTaskModal from "../components/HomeTaskModal";
 import emptyItemIcon from "../assets/empty-item.avif";
-import { useTasks } from "../context/TaskContext";
+import { useTasks } from "../context/useTasks";
 import { getLocalDateKey, getTaskDayKey } from "../utils/date";
 import { groupTasksByCategory } from "../utils/tasks";
 
@@ -19,6 +19,7 @@ function CalendarPage() {
   const [taskToDelete, setTaskToDelete] = useState(null);
   const [categoryToDelete, setCategoryToDelete] = useState(null);
 
+  //================ Selected Day Task Data ================
   const selectedDateKey = getLocalDateKey(selectedDate);
   const markedDates = tasks.map(getTaskDayKey);
   const dayTasks = tasks.filter(
@@ -32,6 +33,7 @@ function CalendarPage() {
     month: "long",
   });
 
+  //================ Task Card Actions ================
   function moveTaskToRecyclingBin(task) {
     deleteTask(task.id);
     setSelectedTask((currentTask) =>
@@ -39,6 +41,7 @@ function CalendarPage() {
     );
   }
 
+  //================ Modal Scroll Lock ================
   // Same scroll lock as the Home page while a modal is open.
   useEffect(() => {
     const panel = document.querySelector(".app-panel");

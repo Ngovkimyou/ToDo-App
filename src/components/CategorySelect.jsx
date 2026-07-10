@@ -7,6 +7,7 @@ function CategorySelect({ value, onChange }) {
   const [isOpen, setIsOpen] = useState(false);
   const [direction, setDirection] = useState("down");
 
+  //================ Close Dropdown On Outside Click ================
   useEffect(() => {
     function handleClickOutside(event) {
       if (!fieldRef.current?.contains(event.target)) {
@@ -32,9 +33,11 @@ function CategorySelect({ value, onChange }) {
         placeholder="Select Category"
         editable={false}
         onOpen={(nextDirection) => {
+          // SmartSelect decides whether the menu should open upward or downward.
           setDirection(nextDirection);
           setIsOpen((currentIsOpen) => !currentIsOpen);
         }}
+        onClose={() => setIsOpen(false)}
         onChange={(nextValue) => {
           onChange(nextValue);
           setIsOpen(false);

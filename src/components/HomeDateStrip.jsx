@@ -6,6 +6,7 @@ const VISIBLE_COUNT = 5;
 const CENTER_INDEX = Math.floor(VISIBLE_COUNT / 2);
 const TODAY_INDEX = Math.floor(DAY_COUNT / 2);
 
+//================ Date Strip Helpers ================
 function createDateFromKey(dateKey) {
   const [year, month, day] = (dateKey || "").split("-").map(Number);
   const date = new Date(year, month - 1, day);
@@ -87,12 +88,15 @@ function HomeDateStrip({ selectedDateKey, onDateChange }) {
     onDateChange?.(getLocalDateKey(todayRange[TODAY_INDEX]));
   }
 
+  //================ Sync External Date Changes ================
   useEffect(() => {
     const matchingIndex = dates.findIndex(
       (date) => getLocalDateKey(date) === selectedDateKey
     );
 
     if (matchingIndex !== -1) {
+      // Keep the animated strip aligned when the selected date comes from routing.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSelectedIndex(matchingIndex);
       return;
     }

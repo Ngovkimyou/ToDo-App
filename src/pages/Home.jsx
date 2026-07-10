@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useTasks } from "../context/TaskContext";
+import { useTasks } from "../context/useTasks";
 import HomeDateStrip from "../components/HomeDateStrip";
 import HomeDeleteConfirm from "../components/HomeDeleteConfirm";
 import HomeFilterSelect from "../components/HomeFilterSelect";
@@ -12,6 +12,7 @@ import { groupTasksByCategory } from "../utils/tasks";
 
 import "./Home.css";
 
+//================ Date Title Helpers ================
 function formatDateGroupTitle(dateKey) {
   const [year, month, day] = dateKey.split("-");
   const date = new Date(Number(year), Number(month) - 1, Number(day));
@@ -60,6 +61,7 @@ function formatDateRangeTitle(dateKey, dateTasks) {
   }`;
 }
 
+//================ Task Sorting Helpers ================
 function getTaskStartMinutes(task) {
   const match = /\b(\d{1,2}):(\d{2})\s*(AM|PM)\b/i.exec(
     task.dueDate || ""
@@ -104,6 +106,7 @@ function Home() {
   const [taskToDelete, setTaskToDelete] = useState(null);
   const [categoryToDelete, setCategoryToDelete] = useState(null);
 
+  //================ Filtering And Grouping ================
   const normalizedSearchQuery = searchQuery.trim().toLowerCase();
   const trimmedSearchQuery = searchQuery.trim();
   const emptySearchLabel =
@@ -148,6 +151,7 @@ function Home() {
     }, {})
   ).sort(([firstDate], [secondDate]) => firstDate.localeCompare(secondDate));
 
+  //================ Task Card Actions ================
   function moveTaskToRecyclingBin(task) {
     deleteTask(task.id);
     setSelectedTask((currentTask) =>
@@ -179,6 +183,7 @@ function Home() {
     );
   }
 
+  //================ Modal Scroll Lock ================
   useEffect(() => {
     const panel = document.querySelector(".app-panel-home");
 
