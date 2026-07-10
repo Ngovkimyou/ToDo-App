@@ -9,11 +9,14 @@ import recyclingIcon from "../assets/RecyclingBin-icon.avif";
 import { CATEGORY_OPTIONS } from "../utils/taskForm";
 
 const PROMPT_CLOSE_DURATION = 260;
+
+//================ Category Icon Lookup ================
 const categoryIconByValue = CATEGORY_OPTIONS.reduce((icons, option) => {
   icons[option.value] = option.icon;
   return icons;
 }, {});
 
+//================ Time Rail Helpers ================
 function getTaskStartLabel(dueDate) {
   const timeMatch = dueDate?.match(/\b(\d{1,2}):(\d{2})\s*(AM|PM)\b/i);
 
@@ -50,6 +53,7 @@ function HomeTaskCard({
   const isRemovingCategory = isPromptClosing && recyclingCountdown === 0;
   const categoryIcon = categoryIconByValue[category];
 
+  //================ Task Menu Lifecycle ================
   useEffect(() => {
     function closeMenu() {
       setOpenMenuTaskId(null);
@@ -64,12 +68,17 @@ function HomeTaskCard({
 
   useEffect(() => {
     if (isCountdownActive) {
+      // Close task menus while the category completion countdown is running.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setOpenMenuTaskId(null);
     }
   }, [isCountdownActive]);
 
+  //================ Completion Prompt Lifecycle ================
   useEffect(() => {
     if (isCategoryComplete) {
+      // The prompt is an animation state derived from category completion.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setShowCompletePrompt(true);
       setIsPromptClosing(false);
       return undefined;
@@ -102,6 +111,8 @@ function HomeTaskCard({
     }
 
     if (recyclingCountdown === 0) {
+      // Start the exit animation before moving the category to the bin.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsPromptClosing(true);
 
       window.setTimeout(() => {

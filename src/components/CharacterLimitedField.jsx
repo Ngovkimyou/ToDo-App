@@ -7,6 +7,7 @@ function CharacterLimitedField({
   multiline = false,
   onChange,
 }) {
+  // Use one component for both title inputs and description textareas.
   const FieldTag = multiline ? "textarea" : "input";
 
   return (

@@ -1,11 +1,39 @@
-import { createContext, useContext, useState } from "react";
+import { useEffect, useState } from "react";
+import { TaskContext } from "./task-context";
 
-const TaskContext = createContext();
+const TASKS_STORAGE_KEY = "todo-app-tasks";
+const DELETED_TASKS_STORAGE_KEY = "todo-app-deleted-tasks";
+
+//================ Local Storage Helpers ================
+function readStoredTasks(storageKey) {
+  try {
+    const storedValue = localStorage.getItem(storageKey);
+    const parsedValue = storedValue ? JSON.parse(storedValue) : [];
+
+    return Array.isArray(parsedValue) ? parsedValue : [];
+  } catch {
+    return [];
+  }
+}
 
 export function TaskProvider({ children }) {
-  const [tasks, setTasks] = useState([]);
-  const [deletedTasks, setDeletedTasks] = useState([]);
+  const [tasks, setTasks] = useState(() => readStoredTasks(TASKS_STORAGE_KEY));
+  const [deletedTasks, setDeletedTasks] = useState(() =>
+    readStoredTasks(DELETED_TASKS_STORAGE_KEY)
+  );
 
+  useEffect(() => {
+    localStorage.setItem(TASKS_STORAGE_KEY, JSON.stringify(tasks));
+  }, [tasks]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      DELETED_TASKS_STORAGE_KEY,
+      JSON.stringify(deletedTasks)
+    );
+  }, [deletedTasks]);
+
+  //================ Active Task Actions ================
   function addTask(task) {
     setTasks((currentTasks) => [...currentTasks, task]);
   }
@@ -103,6 +131,7 @@ export function TaskProvider({ children }) {
     );
   }
 
+  // Keep old duplicated deleted tasks from rendering if localStorage already has them.
   const uniqueDeletedTasks = deletedTasks.filter(
     (task, index, currentDeletedTasks) =>
       currentDeletedTasks.findIndex(
@@ -128,8 +157,4 @@ export function TaskProvider({ children }) {
       {children}
     </TaskContext.Provider>
   );
-}
-
-export function useTasks() {
-  return useContext(TaskContext);
 }

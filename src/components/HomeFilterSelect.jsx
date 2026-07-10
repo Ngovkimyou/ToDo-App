@@ -9,6 +9,7 @@ function HomeFilterSelect({ value, onChange }) {
   const [isOpen, setIsOpen] = useState(false);
   const [direction, setDirection] = useState("down");
 
+  //================ Close Filter Dropdown On Outside Click ================
   useEffect(() => {
     function handleClickOutside(event) {
       if (!fieldRef.current?.contains(event.target)) {
@@ -33,6 +34,7 @@ function HomeFilterSelect({ value, onChange }) {
         direction={direction}
         editable={false}
         onOpen={(nextDirection) => {
+          // SmartSelect calculates the direction from screen position.
           setDirection(nextDirection);
           setIsOpen((currentIsOpen) => !currentIsOpen);
         }}

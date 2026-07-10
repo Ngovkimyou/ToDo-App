@@ -22,6 +22,7 @@ function BinTaskCard({
         {tasks.map((task) => (
           <div className="task-folder-item" key={task.id}>
             <div className="task-folder-main">
+              {/* Selection mode replaces the normal task icon with a checkbox. */}
               <span
                 className={`task-folder-icon ${
                   task.completed ? "is-completed" : ""
@@ -56,6 +57,7 @@ function BinTaskCard({
             </div>
 
             {!selectMode && (
+              //================ Single Deleted Task Actions ================
               <div className="bin-item-actions">
                 <button
                   className="task-menu-action is-restore"

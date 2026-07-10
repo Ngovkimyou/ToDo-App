@@ -4,6 +4,7 @@ import personalIcon from "../assets/personal-icon.avif";
 import schoolIcon from "../assets/school-icon.avif";
 import workIcon from "../assets/work-icon.avif";
 
+//================ Shared Task Form Constants ================
 export const TITLE_LIMIT = 50;
 export const DESCRIPTION_LIMIT = 200;
 
@@ -15,6 +16,7 @@ export const CATEGORY_OPTIONS = [
   { value: "Other", label: "Other", icon: otherIcon },
 ];
 
+//================ Date Time Helpers ================
 export function getCurrentDateTime() {
   const now = new Date();
   const rawHour = now.getHours();
@@ -38,6 +40,7 @@ export function createNumberOptions(length, start = 0) {
   );
 }
 
+//================ Character Limit Helpers ================
 export function getCharacterStatus(length, limit) {
   if (length >= limit) {
     return "is-limit";

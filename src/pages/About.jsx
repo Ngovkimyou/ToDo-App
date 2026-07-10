@@ -1,5 +1,4 @@
-import {Link} from "react-router-dom";
-import "./About.css"
+import "./About.css";
 
 function About() {
   return (
@@ -7,13 +6,14 @@ function About() {
       <h1 className="page-title">About</h1>
 
       <div className="about-content">
-        {/*project description*/}
+        {/*================ Project Description ================*/}
         <section className="about-section">
           <p className="section-description">
             ToDo App is developed by a group of students in the purpose of making a viable website for users to keep track of their works and tasks effectively. It is designed with minimal but breathtaking style to help users focus and organzie their future events.
           </p>
         </section>
 
+        {/*================ Team Information ================*/}
         <section className="about-section">
           <h3 className="subsection-title">Instructor</h3>
           <div className="instructor-card">
@@ -27,7 +27,7 @@ function About() {
 
             <div className="team-card team-leader">
               <div className="team-role">Team Leader</div>
-              <div className="team-name">Kimyou Ngov</div>
+              <div className="team-name">Kimyoo Ngov</div>
               <div className="team-tasks">
                 <span className="task-tag">UI/UX Design</span>
                 <span className="task-tag">Home Page</span>
@@ -56,6 +56,7 @@ function About() {
           </div>
         </section>
 
+        {/*================ Tools And References ================*/}
         <section className="about-section">
           <h3 className="subsection-title">Technologies &amp; Tools </h3>
           <div className="tech-grid">
@@ -91,6 +92,7 @@ function About() {
               </a>
               .
             </p>
+            <br />
             <p className="reference-text">
               Fonts used in this project are sourced from
                 <a 

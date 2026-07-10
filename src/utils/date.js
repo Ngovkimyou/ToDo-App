@@ -1,3 +1,4 @@
+//================ Date Key Formatting ================
 export function getLocalDateKey(date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -6,6 +7,7 @@ export function getLocalDateKey(date) {
   return `${year}-${month}-${day}`;
 }
 
+//================ Task Date Fallbacks ================
 export function getTaskCreatedDateKey(task) {
   if (task.createdDate) {
     return task.createdDate;
@@ -18,6 +20,8 @@ export function getTaskCreatedDateKey(task) {
   return getLocalDateKey(new Date(task.id));
 }
 
+// Prefer due date for scheduling views, but fall back to created date for
+// older saved tasks that may not have a full dueDate value.
 export function getTaskDueDateKey(task) {
   const match = /^(\d{1,2})\/(\d{1,2})(?:\/(\d{4}))?/.exec(
     task.dueDate || ""

@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CategorySelect from "../components/CategorySelect";
 import CharacterLimitedField from "../components/CharacterLimitedField";
 import DateTimePicker from "../components/DateTimePicker";
-import { useTasks } from "../context/TaskContext";
+import KeyboardHelpModal from "../components/KeyboardHelpModal";
+import { useTasks } from "../context/useTasks";
 import { getLocalDateKey } from "../utils/date";
 import {
   DESCRIPTION_LIMIT,
@@ -17,6 +18,7 @@ import "./CreateTask.css";
 function CreateTask() {
   const { addTask } = useTasks();
   const navigate = useNavigate();
+  const formRef = useRef(null);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -24,7 +26,9 @@ function CreateTask() {
   const [endDateTime, setEndDateTime] = useState(getCurrentDateTime);
   const [hasEndDate, setHasEndDate] = useState(false);
   const [category, setCategory] = useState("");
+  const [isKeyboardHelpOpen, setIsKeyboardHelpOpen] = useState(false);
 
+  //================ Validation State ================
   const canCreateTask = title.trim().length > 0;
   const titleStatus = getCharacterStatus(title.length, TITLE_LIMIT);
   const descriptionStatus = getCharacterStatus(
@@ -50,6 +54,75 @@ function CreateTask() {
     return `${dateTime.year}-${dateTime.month}-${dateTime.day}`;
   }
 
+  //================ Desktop Keyboard Navigation ================
+  function isDesktopKeyboard() {
+    return !window.matchMedia("(max-width: 900px)").matches;
+  }
+
+  function focusSection(sectionName) {
+    if (sectionName === "end" && hasEndDate) {
+      focusDateInput("end");
+      return;
+    }
+
+    const section = formRef.current?.querySelector(
+      `[data-keyboard-section="${sectionName}"]`
+    );
+    const focusableSelector =
+      'input:not([type="hidden"]), textarea, button:not(:disabled), [tabindex]:not([tabindex="-1"])';
+    const focusTarget = section?.matches(focusableSelector)
+      ? section
+      : section?.querySelector(focusableSelector);
+
+    focusTarget?.focus();
+  }
+
+  function focusDateInput(sectionName) {
+    const dateInput = formRef.current?.querySelector(
+      `[data-keyboard-section="${sectionName}"] .date-time-picker .smart-select-input`
+    );
+
+    dateInput?.focus();
+  }
+
+  function handleFormKeyDown(event) {
+    if (!isDesktopKeyboard()) {
+      return;
+    }
+
+    if (event.target.closest(".date-time-picker")) {
+      return;
+    }
+
+    const openSelect = event.target.closest(".smart-select")?.querySelector(
+      ".smart-select-menu"
+    );
+
+    if (openSelect && (event.key === "ArrowDown" || event.key === "ArrowUp")) {
+      return;
+    }
+
+    const currentSection = event.target.closest("[data-keyboard-section]")
+      ?.dataset.keyboardSection;
+
+    if (!currentSection) {
+      return;
+    }
+
+    const sections = ["title", "description", "start", "end", "category", "submit"];
+    const currentIndex = sections.indexOf(currentSection);
+
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      focusSection(sections[Math.min(currentIndex + 1, sections.length - 1)]);
+    }
+
+    if (event.key === "ArrowUp") {
+      event.preventDefault();
+      focusSection(sections[Math.max(currentIndex - 1, 0)]);
+    }
+  }
+
   function handleSubmit(event) {
     event.preventDefault();
 
@@ -59,6 +132,7 @@ function CreateTask() {
 
     const dueDate = formatDueDate(startDateTime);
 
+    // Store both display dates and normalized metadata used by Home filtering.
     addTask({
       id: Date.now(),
       title: title.trim(),
@@ -80,36 +154,79 @@ function CreateTask() {
 
   return (
     <div className="create-task-page">
-      <h1 className="page-title">Create Task</h1>
+      <div className="create-task-heading">
+        <h1 className="page-title">Create Task</h1>
+        <button
+          className="keyboard-help-button"
+          type="button"
+          aria-label="Open keyboard support tutorial"
+          onClick={() => setIsKeyboardHelpOpen(true)}
+        >
+          ?
+        </button>
+      </div>
 
-      <form className="task-form" onSubmit={handleSubmit}>
-        <CharacterLimitedField
-          label="Title"
-          value={title}
-          limit={TITLE_LIMIT}
-          status={titleStatus}
-          placeholder="Task title"
-          onChange={setTitle}
-        />
+      <form
+        ref={formRef}
+        className="task-form"
+        onKeyDownCapture={handleFormKeyDown}
+        onSubmit={handleSubmit}
+      >
+        <div data-keyboard-section="title">
+          <CharacterLimitedField
+            label="Title"
+            value={title}
+            limit={TITLE_LIMIT}
+            status={titleStatus}
+            placeholder="Task title"
+            onChange={setTitle}
+          />
+        </div>
 
-        <CharacterLimitedField
-          label="Description"
-          value={description}
-          limit={DESCRIPTION_LIMIT}
-          status={descriptionStatus}
-          placeholder="Write a short note"
-          multiline
-          onChange={setDescription}
-        />
+        <div data-keyboard-section="description">
+          <CharacterLimitedField
+            label="Description"
+            value={description}
+            limit={DESCRIPTION_LIMIT}
+            status={descriptionStatus}
+            placeholder="Write a short note"
+            multiline
+            onChange={setDescription}
+          />
+        </div>
 
-        <DateTimePicker
-          legend="Starting Date and Time"
-          value={startDateTime}
-          onChange={handleStartDateTimeChange}
-        />
+        <div data-keyboard-section="start">
+          <DateTimePicker
+            legend="Starting Date and Time"
+            value={startDateTime}
+            onChange={handleStartDateTimeChange}
+            onNavigate={(direction) =>
+              focusSection(direction === "next" ? "end" : "description")
+            }
+          />
+        </div>
 
-        <section className="ending-date-section">
-          <label className="ending-date-toggle">
+        <section className="ending-date-section" data-keyboard-section="end">
+          <label
+            className="ending-date-toggle"
+            tabIndex={0}
+            onKeyDown={(event) => {
+              if (event.key !== "Enter" && event.key !== " ") {
+                return;
+              }
+
+              event.preventDefault();
+              setHasEndDate((currentValue) => {
+                const nextValue = !currentValue;
+
+                if (nextValue) {
+                  window.setTimeout(() => focusDateInput("end"));
+                }
+
+                return nextValue;
+              });
+            }}
+          >
             <span>Ending Date and Time</span>
             <input
               type="checkbox"
@@ -132,13 +249,19 @@ function CreateTask() {
               legend="Ending Date and Time"
               value={endDateTime}
               onChange={handleEndDateTimeChange}
+              onNavigate={(direction) =>
+                focusSection(direction === "next" ? "category" : "start")
+              }
             />
           )}
         </section>
 
-        <CategorySelect value={category} onChange={setCategory} />
+        <div data-keyboard-section="category">
+          <CategorySelect value={category} onChange={setCategory} />
+        </div>
 
         <button
+          data-keyboard-section="submit"
           className="create-task-button"
           type="submit"
           disabled={!canCreateTask}
@@ -146,6 +269,11 @@ function CreateTask() {
           Create Task
         </button>
       </form>
+
+      <KeyboardHelpModal
+        open={isKeyboardHelpOpen}
+        onClose={() => setIsKeyboardHelpOpen(false)}
+      />
     </div>
   );
 }

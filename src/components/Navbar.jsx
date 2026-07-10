@@ -11,6 +11,7 @@ import blackChecklistIcon from "../assets/black-CheckList-icon.avif";
 import blackCreateTaskIcon from "../assets/black-CreateTask-icon.avif";
 import blackRecyclingBinIcon from "../assets/black-RecyclingBin-icon.avif";
 
+//================ Navigation Item Config ================
 const navItems = [
   { to: "/", label: "Checklist", icon: checklistIcon, hoverIcon: blackChecklistIcon },
   { to: "/calendar", label: "Calendar", icon: calendarIcon, hoverIcon: blackCalendarIcon },
@@ -30,6 +31,7 @@ function Navbar() {
   const linkRefs = useRef({});
   const [indicator, setIndicator] = useState(null);
 
+  //================ Active Indicator Positioning ================
   const updateIndicator = useCallback(() => {
     const nav = navRef.current;
     const activeLink = linkRefs.current[location.pathname];
@@ -52,7 +54,7 @@ function Navbar() {
         pillRect.width / 2 -
         indicatorWidth / 2,
       y: linkRect.top - navRect.top - 8,
-      width: indicatorWidth,
+      width: indicatorWidth + 2,
       height: linkRect.height + 16,
     });
   }, [location.pathname]);

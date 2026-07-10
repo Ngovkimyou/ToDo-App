@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useTasks } from "../context/TaskContext";
+import { useTasks } from "../context/useTasks";
 import BinTaskCard from "../components/BinTaskCard";
 import HomeDeleteConfirm from "../components/HomeDeleteConfirm";
 import emptyItemIcon from "../assets/empty-item.avif";
@@ -15,8 +15,10 @@ function RecyclingBin() {
   const [selectedIds, setSelectedIds] = useState(new Set());
   const [pendingBulkAction, setPendingBulkAction] = useState(null);
 
+  //================ Deleted Task Grouping ================
   const taskGroups = Object.entries(groupTasksByCategory(deletedTasks));
 
+  //================ Bulk Selection Actions ================
   function toggleSelectAll() {
     if (selectMode) {
       setSelectMode(false);

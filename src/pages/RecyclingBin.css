@@ -1,7 +1,13 @@
+/* ======================================================
+                    Recycling Bin Shell
+   ====================================================== */
 .bin-page {
   width: 100%;
 }
 
+/* ======================================================
+                    Bin Task List
+   ====================================================== */
 .bin-task-list {
   width: min(100%, 720px);
   display: grid;
@@ -9,6 +15,9 @@
   margin: 0 auto 32px;
 }
 
+/* ======================================================
+                    Empty State
+   ====================================================== */
 .bin-empty-state {
   min-height: 260px;
   display: grid;
@@ -40,6 +49,9 @@
     -2px -2px 0 #fff;
 }
 
+/* ======================================================
+                    Bin Task Interaction Overrides
+   ====================================================== */
 .bin-page .task-folder-item,
 .bin-page .task-folder-icon {
   cursor: default;
@@ -75,6 +87,9 @@
   transform: rotate(12deg);
 }
 
+/* ======================================================
+                    Single Task Actions
+   ====================================================== */
 .bin-item-actions {
   display: flex;
   align-items: center;
@@ -106,6 +121,9 @@
   color: #000;
 }
 
+/* ======================================================
+                    Bulk Action Toolbar
+   ====================================================== */
 .bin-toolbar {
   width: min(100%, 720px);
   display: flex;
@@ -186,6 +204,7 @@
   box-shadow: none;
 }
 
+/* =========== Selectable Checkbox State =========== */
 .task-folder-icon.is-selectable {
   cursor: pointer !important;
   pointer-events: auto;
@@ -207,6 +226,9 @@
   cursor: pointer;
 }
 
+/* ======================================================
+                    Mobile Recycling Bin
+   ====================================================== */
 @media (max-width: 760px) {
   .bin-empty-state {
     min-height: 210px;

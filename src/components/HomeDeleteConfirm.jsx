@@ -11,6 +11,7 @@ function HomeDeleteConfirm({
   onCancel,
   onConfirm,
 }) {
+  // Support both older `task` calls and newer generic `item` calls.
   const confirmItem = item || task;
   const isOpen = open !== undefined ? open : Boolean(confirmItem);
 
