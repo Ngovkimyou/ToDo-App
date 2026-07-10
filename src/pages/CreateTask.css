@@ -1,0 +1,536 @@
+.create-task-page {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.task-form {
+  display: grid;
+  gap: 18px;
+}
+
+.form-field,
+.date-time-picker label {
+  display: grid;
+  gap: 8px;
+  color: #000;
+  font-weight: 700;
+}
+
+.form-field input,
+.form-field textarea,
+.form-field select,
+.date-time-picker select {
+  width: 100%;
+  border: 2px solid #000;
+  border-radius: 18px;
+  box-sizing: border-box;
+  background: #fff;
+  color: #000;
+  font: inherit;
+  font-weight: 700;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.form-field input:hover,
+.form-field textarea:hover,
+.form-field select:hover,
+.date-time-picker select:hover {
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 #000;
+}
+
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus,
+.date-time-picker select:focus {
+  outline: none;
+  box-shadow: 4px 4px 0 #000;
+  transform: translateY(-2px);
+}
+
+.form-field .limited-field.is-warning input:focus,
+.form-field .limited-field.is-warning textarea:focus {
+  border-color: #f4c400;
+  box-shadow: 4px 4px 0 #f4c400;
+}
+
+.form-field .limited-field.is-limit input:focus,
+.form-field .limited-field.is-limit textarea:focus {
+  border-color: #d71920;
+  box-shadow: 4px 4px 0 #d71920;
+}
+
+.form-field input,
+.form-field select,
+.limited-field input {
+  min-height: 54px;
+  padding: 0 18px;
+  line-height: 54px;
+}
+
+.form-field textarea {
+  min-height: 116px;
+  padding: 16px 18px;
+  resize: none;
+}
+
+.limited-field {
+  position: relative;
+}
+
+.limited-field input,
+.limited-field textarea {
+  padding-right: 82px;
+}
+
+.limited-field input {
+  padding-bottom: 0;
+}
+
+.limited-field textarea {
+  padding-bottom: 42px;
+}
+
+.char-counter {
+  position: absolute;
+  right: 16px;
+  bottom: 8px;
+  color: #000;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  pointer-events: none;
+  transition: color 180ms ease;
+}
+
+.limited-field-multiline .char-counter {
+  bottom: 14px;
+}
+
+.form-field .limited-field.is-warning input,
+.form-field .limited-field.is-warning textarea {
+  border-color: #f4c400;
+}
+
+.limited-field.is-warning .char-counter {
+  color: #b38a00;
+}
+
+.form-field .limited-field.is-warning input:hover,
+.form-field .limited-field.is-warning textarea:hover {
+  box-shadow: 4px 4px 0 #f4c400;
+}
+
+.form-field .limited-field.is-limit input,
+.form-field .limited-field.is-limit textarea {
+  border-color: #d71920;
+}
+
+.limited-field.is-limit .char-counter {
+  color: #d71920;
+}
+
+.form-field .limited-field.is-limit input:hover,
+.form-field .limited-field.is-limit textarea:hover {
+  box-shadow: 4px 4px 0 #d71920;
+}
+
+.date-time-picker {
+  margin: 0;
+  padding: 18px;
+  border: 2px solid #000;
+  border-radius: 22px;
+}
+
+.date-time-picker legend {
+  padding: 0 10px;
+  color: #000;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.date-time-grid {
+  display: grid;
+  grid-template-columns:
+    minmax(80px, 1fr)
+    minmax(80px, 1fr)
+    minmax(112px, 1.3fr)
+    minmax(80px, 1fr)
+    minmax(80px, 1fr)
+    minmax(80px, 1fr);
+  gap: 12px;
+}
+
+.date-time-field-year .smart-select-control {
+  grid-template-columns: minmax(68px, 1fr) 42px;
+}
+
+.date-time-picker label {
+  text-align: center;
+}
+
+.ending-date-section {
+  display: grid;
+  gap: 14px;
+}
+
+.ending-date-toggle {
+  min-height: 58px;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 130px;
+  align-items: center;
+  gap: 14px;
+  padding: 0 18px;
+  border: 2px solid #000;
+  border-radius: 999px;
+  box-sizing: border-box;
+  background: #fff;
+  color: #000;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease,
+    color 180ms ease;
+}
+
+.ending-date-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 #000;
+}
+
+.ending-date-toggle input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ending-date-switch {
+  width: 130px;
+  min-height: 42px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-self: end;
+  justify-content: center;
+  padding: 0;
+  border: 2px solid #000;
+  border-radius: 999px;
+  box-sizing: border-box;
+  background: #fff;
+  transition:
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.ending-date-status {
+  position: absolute;
+  font-size: 13px;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+  transition:
+    color 180ms ease,
+    opacity 180ms ease,
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ending-date-status-enabled {
+  left: 14px;
+  color: #fff;
+  opacity: 0;
+  text-align: left;
+  transform: translateX(10px);
+}
+
+.ending-date-status-unenabled {
+  right: 14px;
+  color: #000;
+  opacity: 1;
+  text-align: right;
+  transform: translateX(0);
+}
+
+.ending-date-knob {
+  width: 28px;
+  height: 28px;
+  display: block;
+  position: absolute;
+  left: 7px;
+  border: 2px solid #000;
+  border-radius: 50%;
+  box-sizing: border-box;
+  background: #000;
+  transition:
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 180ms ease;
+}
+
+.ending-date-toggle input:checked + .ending-date-switch {
+  background: #000;
+}
+
+.ending-date-toggle input:checked + .ending-date-switch .ending-date-status {
+  color: #fff;
+}
+
+.ending-date-toggle input:checked + .ending-date-switch .ending-date-status-enabled {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.ending-date-toggle input:checked + .ending-date-switch .ending-date-status-unenabled {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+.ending-date-toggle input:checked + .ending-date-switch .ending-date-knob {
+  background: #fff;
+  transform: translateX(88px);
+}
+
+.date-time-picker select {
+  min-height: 52px;
+  padding: 0 10px;
+  text-align: center;
+}
+
+.smart-select {
+  position: relative;
+}
+
+.smart-select-option {
+  width: 100%;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #000;
+  border-radius: 18px;
+  box-sizing: border-box;
+  background: #fff;
+  color: #000;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  text-align: center;
+  transition:
+    background 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.smart-select-value {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.smart-select-value span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.smart-select-icon {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+
+.smart-select-control {
+  min-height: 52px;
+  display: grid;
+  grid-template-columns: 1fr 42px;
+  border: 2px solid #000;
+  border-radius: 18px;
+  box-sizing: border-box;
+  background: #fff;
+  overflow: hidden;
+  transition:
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.smart-select-display {
+  width: 100%;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 2px solid #000;
+  border-radius: 18px;
+  box-sizing: border-box;
+  background: #fff;
+  color: #000;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  padding: 0 14px 0 18px;
+  transition:
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.smart-select-display:hover,
+.smart-select-display:focus {
+  outline: none;
+  box-shadow: 4px 4px 0 #000;
+  transform: translateY(-2px);
+}
+
+.smart-select-control:hover,
+.smart-select-control:focus-within {
+  outline: none;
+  box-shadow: 4px 4px 0 #000;
+  transform: translateY(-2px);
+}
+
+.smart-select-input,
+.smart-select-trigger {
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: #000;
+  font: inherit;
+  font-weight: 700;
+}
+
+.smart-select-input {
+  padding: 0 10px;
+  text-align: center;
+  box-shadow: none !important;
+}
+
+.smart-select-input:focus {
+  outline: none;
+}
+
+.smart-select-trigger {
+  border-left: 2px solid #000;
+  cursor: pointer;
+}
+
+.smart-select-arrow {
+  width: 0;
+  height: 0;
+  display: inline-block;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 8px solid currentColor;
+}
+
+.smart-select-trigger:hover {
+  background: #000;
+  color: #fff;
+}
+
+.smart-select-menu {
+  width: 100%;
+  max-height: calc((46px * 5) + (6px * 4) + 12px);
+  position: absolute;
+  z-index: 10;
+  left: 0;
+  display: grid;
+  gap: 6px;
+  padding: 6px;
+  border: 2px solid #000;
+  border-radius: 18px;
+  box-sizing: border-box;
+  background: #fff;
+  overflow-y: auto;
+  box-shadow: 4px 4px 0 #000;
+  scrollbar-color: #000 transparent;
+  scrollbar-width: thin;
+}
+
+.smart-select-menu::-webkit-scrollbar {
+  width: 8px;
+}
+
+.smart-select-menu::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.smart-select-menu::-webkit-scrollbar-thumb {
+  background: #000;
+  border: 2px solid #fff;
+  border-radius: 999px;
+}
+
+.smart-select-up .smart-select-menu {
+  bottom: calc(100% + 8px);
+}
+
+.smart-select-down .smart-select-menu {
+  top: calc(100% + 8px);
+}
+
+.smart-select-option {
+  min-height: 46px;
+  border-radius: 14px;
+}
+
+.smart-select-option:hover,
+.smart-select-option.is-selected {
+  background: #000;
+  color: #fff;
+}
+
+.create-task-button {
+  min-height: 58px;
+  border: 2px solid #000;
+  border-radius: 999px;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 18px;
+  font-weight: 700;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease,
+    color 180ms ease;
+}
+
+.create-task-button:not(:disabled):hover {
+  background: #fff;
+  color: #000;
+  box-shadow: 4px 4px 0 #000;
+  transform: translateY(-2px);
+}
+
+.create-task-button:not(:disabled):active {
+  box-shadow: 2px 2px 0 #000;
+  transform: translateY(0);
+}
+
+.create-task-button:disabled {
+  cursor: not-allowed !important;
+  opacity: 0.35;
+}
+
+.create-task-button:disabled:hover {
+  background: #000;
+  color: #fff;
+  box-shadow: none;
+  transform: none;
+}
+
+@media (max-width: 900px) {
+  .date-time-grid {
+    grid-template-columns: repeat(2, minmax(120px, 1fr));
+  }
+}

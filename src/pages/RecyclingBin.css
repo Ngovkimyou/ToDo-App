@@ -1,0 +1,229 @@
+.bin-page {
+  width: 100%;
+}
+
+.bin-task-list {
+  width: min(100%, 720px);
+  display: grid;
+  gap: 28px;
+  margin: 0 auto 32px;
+}
+
+.bin-empty-state {
+  min-height: 260px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 18px;
+  margin: 40px auto;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.bin-empty-state img {
+  width: min(220px, 52vw);
+  opacity: 0.16;
+  pointer-events: none;
+  user-select: none;
+}
+
+.bin-empty-state p {
+  margin: 0;
+  -webkit-text-stroke: 1px #fff;
+  paint-order: stroke fill;
+  text-shadow:
+    2px 2px 0 #fff,
+    -2px 2px 0 #fff,
+    2px -2px 0 #fff,
+    -2px -2px 0 #fff;
+}
+
+.bin-page .task-folder-item,
+.bin-page .task-folder-icon {
+  cursor: default;
+}
+
+.bin-page .task-folder-item:hover {
+  background: transparent;
+}
+
+.bin-page .task-folder-item:active {
+  transform: none;
+}
+
+.bin-page .task-folder-item:hover .task-folder-main {
+  transform: none;
+}
+
+.bin-page .task-folder-icon.is-selection-disabled {
+  cursor: default !important;
+  pointer-events: none;
+}
+
+.bin-page .task-folder-icon.is-selection-disabled * {
+  cursor: default !important;
+}
+
+.bin-page .task-folder-icon.is-selection-disabled:hover {
+  box-shadow: none;
+  transform: rotate(-12deg);
+}
+
+.bin-page .task-folder-icon.is-selection-disabled:hover img {
+  transform: rotate(12deg);
+}
+
+.bin-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bin-item-actions .task-menu-action {
+  opacity: 1;
+  transform: none;
+  transition:
+    transform 180ms ease,
+    background 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.bin-item-actions .task-menu-action:hover {
+  transform: translateY(-2px) scale(1.06);
+}
+
+.task-menu-action.is-restore {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.task-menu-action.is-restore:hover {
+  color: #000;
+}
+
+.bin-toolbar {
+  width: min(100%, 720px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 auto 20px;
+}
+
+.bin-select-toggle {
+  min-height: 46px;
+  padding: 0 22px;
+  border: 2px solid #000;
+  border-radius: 999px;
+  background: #000;
+  color: #fff;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    background 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.bin-select-toggle:hover {
+  transform: translateY(-2px);
+  background: #fff;
+  color: #000;
+  box-shadow: 4px 4px 0 #000;
+}
+
+.bin-bulk-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.bin-bulk-button {
+  min-height: 46px;
+  padding: 0 20px;
+  border: 2px solid #000;
+  border-radius: 999px;
+  background: #fff;
+  color: #000;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    background 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.bin-bulk-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 #000;
+}
+
+.bin-bulk-button.is-danger {
+  background: #d71920;
+  color: #fff;
+}
+
+.bin-bulk-button.is-danger:hover:not(:disabled) {
+  background: #ffb3b3;
+  color: #000;
+}
+
+.bin-bulk-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
+}
+
+.bin-bulk-button:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.task-folder-icon.is-selectable {
+  cursor: pointer !important;
+  pointer-events: auto;
+}
+
+.bin-page .task-folder-icon.is-selectable:hover {
+  box-shadow: 4px 4px 0 #000;
+  transform: rotate(-12deg) translateY(-2px);
+}
+
+.bin-page .task-folder-icon.is-selectable:hover img {
+  transform: rotate(12deg) scale(1.12);
+}
+
+.bin-select-checkbox {
+  width: 26px;
+  height: 26px;
+  accent-color: #000;
+  cursor: pointer;
+}
+
+@media (max-width: 760px) {
+  .bin-empty-state {
+    min-height: 210px;
+    gap: 12px;
+    font-size: 15px;
+  }
+
+  .bin-empty-state img {
+    width: min(160px, 46vw);
+  }
+
+  .bin-empty-state p {
+    -webkit-text-stroke-width: 0.7px;
+    text-shadow:
+      1.5px 1.5px 0 #fff,
+      -1.5px 1.5px 0 #fff,
+      1.5px -1.5px 0 #fff,
+      -1.5px -1.5px 0 #fff;
+  }
+}
